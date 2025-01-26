@@ -8,5 +8,7 @@ const testPrompt = new Prompt(
 
 
 function runTest() {
-    Ollama.addToQue(testPrompt);
+    console.log("Executing prompt!");
+    testPrompt.addCallback("finished", (prompt) => { console.log(prompt.rawResponse); })
+    Ollama.executePrompt(testPrompt);
 }

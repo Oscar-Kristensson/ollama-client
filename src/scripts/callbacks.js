@@ -16,9 +16,15 @@ class Callbacks {
     }
 
     callCallbacks(event) {
+        // Calls all the callbacks.
+        if (!this.callbacks.hasOwnProperty(event)) return;
+
         this.callbacks[event].forEach(element => {
-            element();
+            element(this);
         });
     }
+
+
+    test() { console.log("Hello World!"); }
     
 }
