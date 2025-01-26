@@ -12,6 +12,10 @@ class OllamaAPIContainer {
 
         // Contains all the prompts
         this.promptQue = [];
+
+        this.localModels = undefined;
+
+        this.cacheLocalModels();
         
     };
 
@@ -25,8 +29,7 @@ class OllamaAPIContainer {
         this.promptQue.push(prompt);
     };
 
-
-    getLocalModels() {
+    cacheLocalModels() {
         return fetch(this.ollamaURLs.hostURL + this.ollamaURLs.modelsURL)
             .then((response) => {
                 // Check if the response is ok (status code 200-299)
@@ -38,12 +41,29 @@ class OllamaAPIContainer {
             })
             .then((data) => {
                 // Handle the data received from the API
-                console.log(data);
+                this.localModels = data.models;
             })
             .catch((error) => {
                 // Handle any errors that occur during the fetch
                 console.error('There was a problem with the fetch operation:', error);
-            });        
+            });
+    };
+
+    getLocalModels() {
+        if (!this.localModels) return undefined;
+    };
+
+    isModelInstalled(model) {
+        if (!this.localModels) return undefined;
+
+        for (let i = 0; i < this.localModels.length; i++) {
+            console.log(this.localModels[i].model, model);
+            if (this.localModels[i].model == model )
+                return true;
+        };
+
+        return false;
+
     };
 
 
