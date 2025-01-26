@@ -10,6 +10,10 @@ const testPrompt = new Prompt(
 function runTest() {
     console.log("Executing prompt!");
 
+    Ollama.getLocalModels()
+    .then(models => {
+        console.log(models);
+    })
     
     testPrompt.addCallback("startedResponding", (prompt) => {
         tempTestOutputElement.innerText = "";

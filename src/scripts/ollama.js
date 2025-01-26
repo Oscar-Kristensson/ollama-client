@@ -6,7 +6,8 @@ class OllamaAPIContainer {
     constructor () {
         this.ollamaURLs = {
             hostURL: "http://127.0.0.1:11434/",
-            promptURL: "api/generate"
+            promptURL: "api/generate",
+            modelsURL: "api/tags"
         };
 
         // Contains all the prompts
@@ -22,6 +23,27 @@ class OllamaAPIContainer {
         };
 
         this.promptQue.push(prompt);
+    };
+
+
+    getLocalModels() {
+        return fetch(this.ollamaURLs.hostURL + this.ollamaURLs.modelsURL)
+            .then((response) => {
+                // Check if the response is ok (status code 200-299)
+                if (!response.ok) {
+                    throw new Error('Network response was not ok: ' + response.statusText);
+                }
+                // Parse the JSON response
+                return response.json();
+            })
+            .then((data) => {
+                // Handle the data received from the API
+                console.log(data);
+            })
+            .catch((error) => {
+                // Handle any errors that occur during the fetch
+                console.error('There was a problem with the fetch operation:', error);
+            });        
     };
 
 
