@@ -53,12 +53,11 @@ class OllamaAPIContainer {
         if (!this.localModels) return undefined;
     };
 
-    isModelInstalled(model) {
+    isModelInstalled(model, digest = undefined) {
         if (!this.localModels) return undefined;
 
         for (let i = 0; i < this.localModels.length; i++) {
-            console.log(this.localModels[i].model, model);
-            if (this.localModels[i].model == model )
+            if (this.localModels[i].model === model && (!digest || digest === this.localModels[i].digest))
                 return true;
         };
 
