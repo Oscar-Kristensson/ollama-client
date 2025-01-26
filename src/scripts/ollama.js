@@ -40,24 +40,24 @@ class OllamaAPIContainer {
                 body: JSON.stringify(data)
         })
         .then(response => {
-            console.log("Reading Response!", response);
             if (!response.ok) {
                 throw new Error(`HTTP Error! Status: ${response.status}`);
             }
 
+            this.startedResponding = true;
 
             const reader = response.body.getReader();
             const decoder = new TextDecoder("utf-8");
 
-
+            prompt.callCallbacks("startedResponding");
 
             const readStream = () => {
                 return reader.read().then(({ done, value }) => {
-                    console.log("Reading stream!");
 
+                    // Stops the reading when the prompt is done
                     if (done) {
+                        prompt.isFinished = true;
                         prompt.callCallbacks("finished");
-                        console.log("Stream finished");
                         return;
                     };
     

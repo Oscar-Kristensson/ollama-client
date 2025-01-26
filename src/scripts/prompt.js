@@ -10,6 +10,7 @@ class Prompt extends Callbacks {
         this.model = model;
 
         // Output
+        this.startedReponding = false;
         this.isFinished = false;
         this.rawResponse = "";
     }
