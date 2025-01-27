@@ -1,3 +1,5 @@
+# Ollama-client
+README: In progress
 
 ## Installation
 ### Running the development environment
