@@ -51,6 +51,7 @@ class OllamaAPIContainer {
 
     getLocalModels() {
         if (!this.localModels) return undefined;
+        return this.localModels;
     };
 
     isModelInstalled(model, digest = undefined) {
