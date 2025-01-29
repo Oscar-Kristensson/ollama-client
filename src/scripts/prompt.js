@@ -17,5 +17,6 @@ class Prompt extends Callbacks {
         this.startedReponding = false;
         this.isFinished = false;
         this.rawResponse = "";
+        this.resultResponse = undefined;
     }
 }

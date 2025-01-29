@@ -4,20 +4,27 @@
 
 class OllamaAPIContainer {
     constructor () {
+
+    };
+
+
+    initalize(hostURL = "http://127.0.0.1:11434/", promptURL = "api/generate", modelsURL = "api/tags") {
         this.ollamaURLs = {
-            hostURL: "http://127.0.0.1:11434/",
-            promptURL: "api/generate",
-            modelsURL: "api/tags"
+            hostURL: hostURL,
+            promptURL: promptURL,
+            modelsURL: modelsURL
         };
 
-        // Contains all the prompts
+        // Contains all the prompts. Should the que be a feature?
         this.promptQue = [];
 
         this.localModels = undefined;
 
         this.cacheLocalModels();
+
+        // Return a promise
         
-    };
+    }
 
     addToQue(prompt) {
         // Should this be a feature?
@@ -68,6 +75,12 @@ class OllamaAPIContainer {
 
 
     executePrompt (prompt) {
+        console.log(this.ollamaURLs);
+        if (!this.ollamaURLs.hostURL) {
+            console.error("Ollama not initalized");
+            return;
+        };
+
         const data = {
             model: prompt.model,
             prompt: prompt.prompt
@@ -99,6 +112,8 @@ class OllamaAPIContainer {
                     // Stops the reading when the prompt is done
                     if (done) {
                         prompt.isFinished = true;
+                        console.log("DONE!")
+                        console.log(">>>>>>", decoder.decode(value));
                         prompt.callCallbacks("finished");
                         return;
                     };
@@ -107,7 +122,12 @@ class OllamaAPIContainer {
                     let word = decoder.decode(value);
     
                     // Extracts the word from the reponse
-                    let textResponse = JSON.parse(word)["response"];
+                    let response = JSON.parse(word);
+                    let textResponse = response["response"];
+
+                    if (response.done) { 
+                        prompt.resultResponse = response;
+                    };
 
                     
                     // Adds the string to the prompts output
