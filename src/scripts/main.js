@@ -7,6 +7,32 @@ const testPrompt = new Prompt(
 )
 
 
+
+// Most likely a function only for testing
+function askPrompt(promptText) {
+    const prompt = new Prompt(
+        promptText,
+        "llama3.2:3b"
+    )
+
+    prompt.addCallback("startedResponding", (prompt) => {
+        tempTestOutputElement.innerText = "";
+        prompt.rawResponse = "";
+    });
+
+
+    prompt.addCallback("streamUpdate", (prompt) => {
+        tempTestOutputElement.innerText = prompt.rawResponse;
+    })
+
+    Ollama.executePrompt(prompt);
+
+
+};
+
+Ollama.initalize()
+
+
 function runTest() {
     console.log("Executing prompt!");
 
