@@ -22,7 +22,7 @@ class OllamaAPIContainer {
 
         this.cacheLocalModels();
 
-        // Return a promise
+        // Return a promise (or some other form of callback)
         
     }
 

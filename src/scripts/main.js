@@ -25,6 +25,10 @@ function askPrompt(promptText) {
         tempTestOutputElement.innerText = prompt.rawResponse;
     })
 
+    prompt.addCallback("finished", (prompt) => {
+        console.log(prompt.resultResponse);
+    })
+
     Ollama.executePrompt(prompt);
 
 
