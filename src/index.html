@@ -4,22 +4,34 @@
     <meta charset="UTF-8" />
     <title>Hello World!</title>
     <link rel="stylesheet" href="styles/index.css" />
+    <link rel="stylesheet" href="styles/chatStyles.css" />
     <script src="scripts/callbacks.js" defer></script>
     <script src="scripts/prompt.js" defer></script>
     <script src="scripts/ollama.js" defer></script>
     <script src="scripts/main.js" defer></script>
   </head>
-  <body>
+  <body class="evening">
     <div class="appContainer">
-      <div class="normalChatWindow">
-        <h1>Hello World!</h1>
+      <div class="window normalChatWindow">       
         <div class="chatContainer">
-          <div class="promptContainer">
-            <div class="promptText">Hello World</div>
+          <div class="messageContainer user">
+            <div class="messageText">Hello World</div>
           </div>
+          <div class="messageContainer response">
+            <div class="messageText">Response container!</div>
+            <p id="tempTestOutputElement"></p>
+            <p id="tempTestModelsElement"></p>
+    
+          </div>
+          
         </div>
-        <p id="tempTestOutputElement"></p>
-        <p id="tempTestModelsElement"></p>
+        <div class="messageComposeContainer">
+          <textarea placeholder="Send a message..." class="messageComposeElement">
+
+          </textarea>
+
+        </div>
+
 
       </div>
     </div>

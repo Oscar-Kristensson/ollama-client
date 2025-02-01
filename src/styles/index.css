@@ -1,19 +1,43 @@
+:root {
+    --chatBackgroundBrightness1: 10%; 
+    --chatBackgroundBrightness2: 10%;
+}
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
         Arial, sans-serif;
     margin: 0;
     padding: 0;
+    color: white;
+    background-color: gray;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 }
 
+body.day {
+    background: linear-gradient(to top, hsl(195, 85%, 60%), hsl(213, 77%, 60%) );
+}
+
+body.evening {
+    background: linear-gradient(to top, hsl(325, 72%, 40%), hsl(251, 74%, 20%) );
+}
 
 .appContainer {
     display: grid;
+    height: 100vh;
+    width: 100vw;
     grid-template-columns: 200px 1fr;
+    grid-template-rows: auto 1fr;
     grid-template-areas: 
         "topbar topbar"
         "left-nav-bar mainContent";
 }
 
-.normalChatWindow {
+.appContainer .window {
+    padding: 20px;
     grid-area: mainContent;
+    background-color: rgba(0, 0, 0, 0.5);
+
 }
+
