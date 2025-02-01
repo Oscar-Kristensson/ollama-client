@@ -55,4 +55,4 @@ UserInterface.currentBackgroundTimePeriodStates = ["night", "morning", "day", "e
 
 UserInterface.updateUserInterfaceTimeBased();
 
-setInterval(UserInterface.updateUserInterfaceTimeBased, 60 * 10**3)
+setInterval(() => { UserInterface.updateUserInterfaceTimeBased(); }, 60 * 10**3)

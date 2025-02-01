@@ -1,7 +1,7 @@
 
 
 
-class Prompt extends Callbacks {
+class ChatPrompt extends Callbacks {
     constructor (prompt, model) {
         super();
 

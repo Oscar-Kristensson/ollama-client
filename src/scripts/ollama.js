@@ -108,7 +108,6 @@ class OllamaAPIContainer {
 
             const readStream = () => {
                 return reader.read().then(({ done, value }) => {
-
                     // Stops the reading when the prompt is done
                     if (done) {
                         prompt.isFinished = true;
@@ -120,28 +119,58 @@ class OllamaAPIContainer {
     
                     // Converts bytes to string
                     let word = decoder.decode(value);
-    
-                    // Extracts the word from the reponse
-                    let response = JSON.parse(word);
-                    let textResponse = response["response"];
-
-                    if (response.done) { 
-                        prompt.resultResponse = response;
-                    };
 
                     
-                    // Adds the string to the prompts output
-                    prompt.rawResponse += textResponse;
+    
+                    // Extracts the word from the reponse
+                    let responses = [];
+                    try {
+                        // Is this necessary (?) This solution is janky and messy!
+                        if (word.includes('"done":false}\n{"model":')) 
+                            responses = word.split('"done":false}\n{"model":');
 
+                        else
+                            responses = [JSON.parse(word)];
 
-                    prompt.callCallbacks("streamUpdate", () => {console.log("test!")});
+                    }
+                    catch (error) 
+                    {
+                        console.error("Some error occured when parsing response :" + word + "\nError:" + error);
+                    }
+
+                    responses.forEach((response) => {
+                        this.#executePrompt_processSingleJSONObjectResponse(prompt, response);
+                        
+                    });
 
                     return readStream();
                 })
             }
 
+
+
             readStream();
         })
+
+
+
+
+
+    };
+
+    #executePrompt_processSingleJSONObjectResponse(prompt, response) {
+        let textResponse = response["response"];
+
+        if (response.done) { 
+            prompt.resultResponse = response;
+        };
+
+        
+        // Adds the string to the prompts output
+        prompt.rawResponse += textResponse;
+
+
+        prompt.callCallbacks("streamUpdate", () => {console.log("test!")});
 
 
     };
