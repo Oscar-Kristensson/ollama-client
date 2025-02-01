@@ -51,3 +51,14 @@ function runTest() {
     Ollama.executePrompt(prompt);
     
 }
+
+const messageComposeElement = document.querySelector(".messageComposeElement");
+
+
+const ChatController = new ChatControllerClass(chatContainer, messageComposeElement);
+
+
+messageComposeElement.addEventListener("keydown", (event) => {
+    if (event.key == "Enter" && event.ctrlKey)
+        ChatController.sendMessage();
+})

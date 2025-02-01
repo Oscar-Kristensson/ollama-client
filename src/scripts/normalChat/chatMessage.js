@@ -1,27 +1,19 @@
 
 
-class ChatResponse {
+class ChatMessage {
     constructor (parent, prompt) {
         this.container = document.createElement("div");
         this.container.className = "messageContainer";
-        this.container.classList.add("response");
+        this.container.classList.add("user");
 
         this.messageTextContainer = document.createElement("div");
         this.messageTextContainer.className = "messageText";
-        this.messageTextContainer.classList.add("response");
+        this.messageTextContainer.innerText = prompt.prompt;
         this.container.appendChild(this.messageTextContainer);
 
 
         this.prompt = prompt;
+        parent.appendChild(this.container);
 
-        this.prompt.addCallback("streamUpdate", () => { this.updateResponse(); });
-
-        parent.appendChild(this.container);       
-
-    }
-
-
-    updateResponse(prompt) {
-        this.messageTextContainer.innerText = this.prompt.rawResponse;
     };
 };
