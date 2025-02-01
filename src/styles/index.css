@@ -3,6 +3,28 @@
     --chatBackgroundBrightness2: 10%;
 }
 
+/* Styles for WebKit-based browsers */
+::-webkit-scrollbar {
+    width: 6px; /* Width of the scrollbar */
+    height: 6px; /* Height of the scrollbar for horizontal scrolling */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #555; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners for the scrollbar thumb */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #888; /* Color when hovering over the scrollbar thumb */
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f100; /* Background of the scrollbar track */
+    border-radius: 10px; /* Rounded corners for the scrollbar track */
+}
+
+
+
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
         Arial, sans-serif;

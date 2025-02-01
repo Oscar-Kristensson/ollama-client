@@ -31,6 +31,18 @@
 
 }
 
+.messageContainer .informationBar {
+    margin-top: 4px;
+    display: flex;
+
+}
+
+.messageContainer .displayElement {
+    color: gray;
+    margin-right: 8px;
+    font-size: 0.75rem;
+}
+
 .messageComposeContainer {
     background-color: rgba(0, 0, 0, 0.5);
     width: 100%;
@@ -56,6 +68,7 @@
     height: 100%;
     padding: 32px;
     padding-top: 24px;
+    font-size: 1rem;
 
     justify-content: center;
 
