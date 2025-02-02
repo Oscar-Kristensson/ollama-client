@@ -106,6 +106,8 @@ class OllamaAPIContainer {
 
             prompt.callCallbacks("startedResponding");
 
+            let responseCache = "";
+
             const readStream = () => {
                 return reader.read().then(({ done, value }) => {
                     // Stops the reading when the prompt is done
@@ -120,13 +122,24 @@ class OllamaAPIContainer {
                     // Converts bytes to string
                     let word = decoder.decode(value);
 
+                    if (responseCache !== "") {
+                        word = responseCache + word;
+                        responseCache = "";
+                    };
+
                     
     
                     // Extracts the word from the reponse
                     let responses = [];
                     try {
                         // Is this necessary (?) This solution is janky and messy!
-                        if (word.includes('"done":false}\n{"model":')) 
+
+                        // Cache repsonses that are too long
+                        if (word.charAt(word.length - 2) !== "}") {
+                            responseCache += word;
+                            return readStream();
+
+                        } else if (word.includes('"done":false}\n{"model":')) 
                             responses = word.split('"done":false}\n{"model":');
 
                         else
@@ -147,9 +160,8 @@ class OllamaAPIContainer {
                 })
             }
 
-
-
             readStream();
+
         })
 
 
@@ -160,6 +172,8 @@ class OllamaAPIContainer {
 
     #executePrompt_processSingleJSONObjectResponse(prompt, response) {
         let textResponse = response["response"];
+
+        if (textResponse == "undefined") alert("Undefined error!" + String(response));
 
         if (response.done) { 
             prompt.resultResponse = response;
