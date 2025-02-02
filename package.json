@@ -27,5 +27,18 @@
   "license": "MIT",
   "dependencies": {
     "electron-squirrel-startup": "^1.0.1"
+  },
+  "build": {
+    "win": {
+      "icon": "src/data/icon.ico"
+    },
+
+    "mac": {
+      "icon": "src/data/icon.icns"
+    },
+
+    "linux": {
+      "icon": "src/data/icon.png"
+    }
   }
 }

@@ -90,4 +90,9 @@ typings/
 
 # Electron-Forge
 out/
-test.txt
+
+
+
+# Custom
+src/data/iconProject.svg
+src/data/icon1024.png
