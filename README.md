@@ -39,3 +39,7 @@ npm run make
 
 ### Windows/Mac/Linux standalone
 Unzip the program and click the ollama-client executable app (depending on your operating system).
+
+
+### Running with an HTTP server/directly in a browser
+TBD
