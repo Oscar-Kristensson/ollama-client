@@ -96,3 +96,6 @@ out/
 # Custom
 src/data/iconProject.svg
 src/data/icon1024.png
+
+src/data/sendIcon.svg
+src/data/sendIconProject.svg
