@@ -15,3 +15,7 @@ messageComposeElement.addEventListener("keydown", (event) => {
     if (event.key == "Enter" && event.ctrlKey)
         ChatController.sendMessage();
 })
+
+
+const sendButtonElement = document.querySelector(".button.send");
+sendButtonElement.addEventListener("click", () => { ChatController.sendMessage(); });

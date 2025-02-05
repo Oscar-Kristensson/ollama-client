@@ -13,6 +13,8 @@ class ChatControllerClass {
 
     sendMessage() {
         let textPrompt = this.textInputArea.value;
+        
+        if (textPrompt == "") return;
         this.textInputArea.value = "";
 
         let model = "llama3.2:3b";
