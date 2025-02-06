@@ -1,0 +1,43 @@
+
+
+.dropdownContainer .button {
+    padding: 0.5rem;
+    background-color: hsl(0, 0%, 10%);
+    border: 1px;
+    border-style: solid;
+    border-color: gray;
+
+}
+
+.dropdownContainer:hover {
+    cursor: pointer;
+}
+
+.dropdownContainer .dropdownElement {
+    padding: 0.5rem;
+    background-color: hsl(0, 0%, 10%, 0.5);
+    transition: background-color 250ms ease-in-out;
+
+
+}
+
+.dropdownContainer .dropdownElement:hover {
+    background-color: hsl(0, 0%, 8%);
+
+}
+
+.dropdownContainer .dropdownElement.selected {
+    display: none;
+}
+
+
+
+
+.dropdownContainer .dropdownElementsContainer {
+    display: none;
+}
+
+.dropdownContainer.opened .dropdownElementsContainer {
+    display: block;
+}
+

@@ -2,8 +2,9 @@
 
 
 
-class OllamaAPIContainer {
+class OllamaAPIContainer extends Callbacks {
     constructor () {
+        super();
 
     };
 
@@ -23,6 +24,9 @@ class OllamaAPIContainer {
         this.cacheLocalModels();
 
         // Return a promise (or some other form of callback)
+
+
+        
         
     }
 
@@ -49,6 +53,8 @@ class OllamaAPIContainer {
             .then((data) => {
                 // Handle the data received from the API
                 this.localModels = data.models;
+                this.callCallbacks("cachedLocalModels");
+                
             })
             .catch((error) => {
                 // Handle any errors that occur during the fetch
@@ -70,7 +76,6 @@ class OllamaAPIContainer {
         };
 
         return false;
-
     };
 
 
