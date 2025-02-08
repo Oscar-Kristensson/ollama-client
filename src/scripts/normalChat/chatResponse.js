@@ -48,6 +48,8 @@ class ChatResponse {
 
     updateResponse(prompt) {
         this.messageTextContainer.innerText = this.prompt.rawResponse;
-        this.parent.scrollTop = this.parent.scrollHeight;
+
+
+        // Scrolls the parent to the bottom, but not currently implemented: this.parent.scrollTop = this.parent.scrollHeight;   
     };
 };

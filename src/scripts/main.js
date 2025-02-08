@@ -12,15 +12,13 @@ const messageComposeElement = document.querySelector(".messageComposeElement");
 const ChatController = new ChatControllerClass(chatContainer, messageComposeElement);
 
 
-Ollama.addCallback("cachedLocalModels", () => {
-    console.log(Ollama.getLocalModels());
-});
+
 
 
 // Add listeners
 messageComposeElement.addEventListener("keydown", (event) => {
     if (event.key == "Enter" && event.ctrlKey)
-        ChatController.sendMessage();
+        ChatController.sendMessage(model = testDropdown.getValue());
 })
 
 
@@ -32,4 +30,17 @@ sendButtonElement.addEventListener("click", () => { ChatController.sendMessage()
 const testContainer = document.querySelector(".testContainer");
 
 
-const testDropdown = new CustomDropdown(testContainer, ["Test1", "Test2", "Test3"], [1, 2, 3]);
+const testDropdown = new CustomDropdown(testContainer, ["Model"], [1]);
+
+Ollama.addCallback("cachedLocalModels", () => {
+    console.log(Ollama.getLocalModels());
+
+    let modelNames = [];
+
+    const localModelsData = Ollama.getLocalModels();
+    localModelsData.forEach(model => {
+        modelNames.push(model.name)
+        
+    });
+    testDropdown.setOptions(modelNames, modelNames);
+});

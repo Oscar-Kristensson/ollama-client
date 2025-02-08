@@ -5,15 +5,14 @@ class CustomDropdown extends Callbacks {
     constructor (parent, options, values) {
         super();
 
-        this.options = options;
-        this.values = values;
         this.dropDownWidth = 0;
 
         this.optionsContainers = [];
         
-        this.selectedOption = 0;
-
         this.generateHTMLObjects(parent);
+
+        this.setOptions(options, values);
+
     }
 
     generateHTMLObjects(parent) {
@@ -23,7 +22,6 @@ class CustomDropdown extends Callbacks {
         
         this.button = document.createElement("div");
         this.button.className = "button";
-        this.button.innerText = this.options[this.selectedOption];
         this.button.addEventListener("click", () => { this.toggleContainerVisibility();});
         this.container.appendChild(this.button);
         
@@ -32,20 +30,6 @@ class CustomDropdown extends Callbacks {
         this.container.appendChild(this.dropDownContainer);
 
 
-        this.options.forEach((element, i) => {
-            const htmlElement = document.createElement("div");
-            htmlElement.innerText = element;
-            htmlElement.className = "dropdownElement";
-            this.dropDownContainer.appendChild(htmlElement);
-            this.optionsContainers.push(htmlElement);
-
-            htmlElement.addEventListener("click", () => { this.uiSelectElement(i);});
-
-            this.dropDownWidth = Utils.max(htmlElement.scrollWidth, this.dropDownWidth);
-            console.log(htmlElement.scrollWidth)
-        });
-
-        this.optionsContainers[this.selectedOption].classList.add("selected");
 
 
 
@@ -53,13 +37,51 @@ class CustomDropdown extends Callbacks {
 
     };
 
-    addOption() {
-        console.error("TBD");
-        
+    addOption(optionName) {
+        let i = this.optionsContainers.length;
+
+        const htmlElement = document.createElement("div");
+        htmlElement.innerText = optionName;
+        htmlElement.className = "dropdownElement";
+        this.dropDownContainer.appendChild(htmlElement);
+        this.optionsContainers.push(htmlElement);
+
+        htmlElement.addEventListener("click", () => { this.uiSelectElement(i); });
+
+        this.dropDownWidth = Utils.max(htmlElement.scrollWidth, this.dropDownWidth);
+        console.log(htmlElement.scrollWidth)
+
+
     }
 
-    setOptions() {
-        console.error("TBD");
+    removeAllOptions() {
+        this.optionsContainers = [];
+        
+        while (this.dropDownContainer.length >= 0) this.dropDownContainer.children[0].remove();
+    }
+
+    setOptions(options, values) {
+        this.selectedOption = 0;
+
+        this.removeAllOptions();
+        if (options == [] || values == []) return;
+
+
+        this.options = options;
+        this.values = values;
+        this.button.innerText = this.options[this.selectedOption];
+
+        this.options.forEach((element, i) => {
+            this.addOption(element);
+        });
+
+
+        if (this.optionsContainers.length !== 0)
+            this.optionsContainers[this.selectedOption].classList.add("selected");
+
+
+
+
 
     }
 
@@ -71,6 +93,7 @@ class CustomDropdown extends Callbacks {
     convertValueToID(value) { return this.values.indexOf(value); };
 
     uiSelectElement(id) {
+        console.log(id);
         this.selectElement(id);
         this.container.classList.remove("opened");
 
@@ -87,4 +110,7 @@ class CustomDropdown extends Callbacks {
         this.callCallbacks("changed");
 
     };
+
+
+    getValue() { return this.values[this.selectedOption]; };
 };

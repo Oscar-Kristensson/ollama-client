@@ -11,13 +11,11 @@ class ChatControllerClass {
 
     }
 
-    sendMessage() {
+    sendMessage(model = "llama3.2:3b") {
         let textPrompt = this.textInputArea.value;
         
         if (textPrompt === "") return;
         this.textInputArea.value = "";
-
-        let model = "llama3.2:3b";
 
         const prompt = new ChatPrompt(textPrompt, model);
 
