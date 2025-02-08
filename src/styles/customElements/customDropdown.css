@@ -2,11 +2,17 @@
 
 .dropdownContainer .button {
     padding: 0.5rem;
-    background-color: hsl(0, 0%, 10%);
+    background-color: hsl(0, 0%, 0%, 0.5);
     border: 1px;
     border-style: solid;
-    border-color: gray;
+    border-color: transparent;
+    transition: all 500ms ease-in-out;
 
+}
+
+.dropdownContainer:hover .button {
+
+    border-color: gray;
 }
 
 .dropdownContainer:hover {
@@ -16,6 +22,9 @@
 .dropdownContainer .dropdownElement {
     padding: 0.5rem;
     background-color: hsl(0, 0%, 10%, 0.5);
+    border: 1px;
+    border-style: solid;
+    border-color: transparent;
     transition: background-color 250ms ease-in-out;
 
 
@@ -23,6 +32,8 @@
 
 .dropdownContainer .dropdownElement:hover {
     background-color: hsl(0, 0%, 8%);
+    border-color: gray;
+
 
 }
 
@@ -39,5 +50,6 @@
 
 .dropdownContainer.opened .dropdownElementsContainer {
     display: block;
+    position: absolute;
 }
 

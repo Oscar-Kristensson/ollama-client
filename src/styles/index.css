@@ -60,15 +60,24 @@ body.morning {
     grid-template-columns: 200px 1fr;
     grid-template-rows: auto 1fr;
     grid-template-areas: 
-        "topbar topbar"
+        "nav-topbar topbar"
         "left-nav-bar mainContent";
 }
+
+
 
 .appContainer .window {
     padding: 20px;
     grid-area: mainContent;
     background-color: rgba(0, 0, 0, 0.5);
 
+}
+
+.appContainer .topBar {
+    grid-area: topbar;
+    height: 48px;
+    background-color: rgba(0, 0, 0, 0.7);
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.75);
 }
 
 

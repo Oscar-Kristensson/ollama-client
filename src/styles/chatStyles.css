@@ -127,10 +127,9 @@
     color: white;
 }
 
-
-.normalChatWindow {
+.window.normalChat {
     display: grid;
-    height: 100vh;
+    height: 100%;
     grid-template-areas: 
         "chat"
         "messageCompose";
@@ -141,3 +140,30 @@
 
     padding-bottom: 0 !important;
 };
+
+
+.topBar.normalChat {
+    display: flex;
+}
+
+.window.topBar.normalChat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.topBarPart {
+    width: min-content;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-items: center;
+    height: 48px;
+
+
+}
+
+.topBarPart.left {
+    align-self: flex-start;
+}

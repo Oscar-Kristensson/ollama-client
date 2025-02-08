@@ -2,10 +2,12 @@
 
 
 class CustomDropdown extends Callbacks {
-    constructor (parent, options, values) {
+    constructor (parent, options, values, CSS_Classes = [], parentIsContainer = false) {
         super();
 
         this.dropDownWidth = 0;
+        this.CSS_Classes = CSS_Classes;
+        this.parentIsContainer = parentIsContainer;
 
         this.optionsContainers = [];
         
@@ -13,12 +15,20 @@ class CustomDropdown extends Callbacks {
 
         this.setOptions(options, values);
 
+
     }
 
     generateHTMLObjects(parent) {
-        this.container = document.createElement("div");
-        this.container.className = "dropdownContainer";
-        parent.appendChild(this.container);
+        if (this.parentIsContainer) {
+            this.container = parent;
+            this.container.classList.add("dropdownContainer");
+        }
+        else {
+            this.container = document.createElement("div");
+            parent.appendChild(this.container);
+            this.container.className = "dropdownContainer";
+        };
+            
         
         this.button = document.createElement("div");
         this.button.className = "button";
@@ -29,9 +39,9 @@ class CustomDropdown extends Callbacks {
         this.dropDownContainer.className = "dropdownElementsContainer";
         this.container.appendChild(this.dropDownContainer);
 
-
-
-
+        this.CSS_Classes.forEach((CSS_Class) => {
+            this.container.classList.add(CSS_Class);
+        });
 
         
 

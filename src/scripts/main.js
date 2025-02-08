@@ -27,10 +27,10 @@ sendButtonElement.addEventListener("click", () => { ChatController.sendMessage()
 
 
 
-const testContainer = document.querySelector(".testContainer");
+const testContainer = document.querySelector(".LLMSelectElement");
 
 
-const testDropdown = new CustomDropdown(testContainer, ["Model"], [1]);
+const testDropdown = new CustomDropdown(testContainer, ["Model"], [1], CSS_Classes = ["test"], parentIsContainer = true);
 
 Ollama.addCallback("cachedLocalModels", () => {
     console.log(Ollama.getLocalModels());
