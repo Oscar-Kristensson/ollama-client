@@ -43,11 +43,14 @@ class ChatResponse {
 
     finishedResponse() {
         this.timeDisplayElement.innerText = String(Math.round(this.prompt.resultResponse.total_duration / 10**6) / 10**3) + "s";
+        console.log(this.prompt.rawResponse);
     };
 
 
     updateResponse(prompt) {
-        this.messageTextContainer.innerText = this.prompt.rawResponse;
+        while (this.messageTextContainer.children.length !== 0)
+            this.messageTextContainer.children[0].remove();
+        formatter.formatToHTML(this.messageTextContainer, this.prompt.rawResponse);
 
 
         // Scrolls the parent to the bottom, but not currently implemented: this.parent.scrollTop = this.parent.scrollHeight;   

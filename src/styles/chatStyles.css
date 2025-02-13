@@ -104,9 +104,10 @@
     flex-direction: row-reverse;
 }
 
+/*
 .buttonPanelContainer .button {
 
-}
+}*/
 
 .buttonPanelContainer .button:hover {
     cursor: pointer;
@@ -150,6 +151,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    max-width: 100%;
 }
 
 .topBarPart {
@@ -166,4 +168,5 @@
 
 .topBarPart.left {
     align-self: flex-start;
+    margin-left: 16px;
 }
