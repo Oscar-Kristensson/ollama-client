@@ -19,7 +19,7 @@ git clone https://github.com/Oscar-Kristensson/ollama-client.git
 ```
 
 #### Installing dependencies
-To run ollama-client, you need to install dependencies. Install electron by running the following command:
+To run ollama-client, you need to install some dependencies. Install electron by running the following command:
 ``` bash
 npm i electron -D
 ```
