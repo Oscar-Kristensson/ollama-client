@@ -6,6 +6,7 @@ const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
     openFile: () => ipcRenderer.invoke('open-file'), // Secure communication
-    loadFile: () => ipcRenderer.invoke('load-file', "README.md")
+    loadFile: (filePath) => ipcRenderer.invoke('load-file', filePath),
+    writeFile: (filePath, data) => ipcRenderer.invoke('write-file', filePath, data),
 
 });

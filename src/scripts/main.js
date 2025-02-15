@@ -5,7 +5,6 @@ const tempTestOutputElement = document.getElementById("tempTestOutputElement");
 
 
 
-Ollama.initalize()
 
 const chatContainer = document.querySelector(".chatContainer");
 
@@ -16,10 +15,6 @@ const ChatController = new ChatControllerClass(chatContainer, messageComposeElem
 
 
 
-window.electronAPI.loadFile("README.md")
-.then(text => {
-    console.log(text);
-});
 
 // Add listeners
 messageComposeElement.addEventListener("keydown", (event) => {
@@ -52,7 +47,20 @@ Ollama.addCallback("cachedLocalModels", () => {
     testDropdown.setOptions(modelNames, modelNames);
 });
 
+// Load config file
+let config = undefined;
+window.electronAPI.loadFile("save/config.json")
+    .then(text => {
+        console.log("TEST");
+        config = JSON.parse(text);
+        Ollama.initalize(config.ipAddress);
 
+    });
+
+window.electronAPI.writeFile("save/output.txt", "data")
+    .then(rv => {
+        console.log(rv);
+    })
 
 const TESTMessage = `
 Quantum physics, also known as quantum mechanics, is a branch of physics that studies the behavior of matter and energy at an atomic and subatomic level. It's a fundamental theory that explains how the universe works at its most basic level.

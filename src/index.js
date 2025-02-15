@@ -1,4 +1,5 @@
 const { app, BrowserWindow, dialog, ipcMain } = require('electron');
+
 const fs = require('fs');
 
 // import { app, BrowserWindow } from 'electron';
@@ -98,4 +99,16 @@ ipcMain.handle('load-file', async (event, filePath) => {
     } catch (error) {
         return `Error: ${error.message}`;
     }
+});
+
+
+ipcMain.handle('write-file', async (event, filePath, data) => {
+    console.log("Writing file", filePath);
+    return fs.promises.writeFile(filePath, data, 'utf-8')
+        .then(() => {
+            return true;
+        })
+        .catch(error => {
+            throw new Error('Error saving file: ' + error.message);
+        });
 });
