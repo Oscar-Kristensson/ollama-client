@@ -16,7 +16,10 @@ const ChatController = new ChatControllerClass(chatContainer, messageComposeElem
 
 
 
-
+window.electronAPI.loadFile("README.md")
+.then(text => {
+    console.log(text);
+});
 
 // Add listeners
 messageComposeElement.addEventListener("keydown", (event) => {
