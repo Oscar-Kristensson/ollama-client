@@ -1,7 +1,3 @@
-const defaultConfig = {
-    "ipAddress": "http://127.0.0.1:11434/"
-}
-
 // Load config file
 let config = undefined;
 
