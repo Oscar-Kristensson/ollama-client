@@ -6,6 +6,8 @@ const fs = require('fs');
 const path = require('node:path');
 const started = require('electron-squirrel-startup');
 const { platform } = require('node:os');
+const { copyFileSync } = require('node:fs');
+const { rejects } = require('node:assert');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -97,7 +99,7 @@ ipcMain.handle('load-file', async (event, filePath) => {
         const content = await fs.promises.readFile(filePath, 'utf-8');
         return content;
     } catch (error) {
-        return `Error: ${error.message}`;
+        throw new Error(`Error: ${error.message}`);
     }
 });
 
@@ -112,3 +114,14 @@ ipcMain.handle('write-file', async (event, filePath, data) => {
             throw new Error('Error saving file: ' + error.message);
         });
 });
+
+
+// Check if a save directory exists, create one otherwise
+
+fs.promises.access("save/", fs.constants.F_OK)
+    .catch(() => {
+        fs.promises.mkdir("save/")
+        .then(() => {
+            console.log("Created dir");
+        }) 
+    })
