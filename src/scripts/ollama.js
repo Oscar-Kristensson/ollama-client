@@ -9,10 +9,11 @@ class OllamaAPIContainer extends Callbacks {
     };
 
 
-    initalize(hostURL = "http://127.0.0.1:11434/", promptURL = "api/generate", modelsURL = "api/tags") {
+    initalize(hostURL = "http://127.0.0.1:11434/", promptURL = "api/generate", chatURL = "api/chat", modelsURL = "api/tags") { 
         this.ollamaURLs = {
             hostURL: hostURL,
             promptURL: promptURL,
+            chatURL: chatURL,
             modelsURL: modelsURL
         };
 
@@ -79,26 +80,52 @@ class OllamaAPIContainer extends Callbacks {
     };
 
 
-    executePrompt (prompt) {
-        console.log(this.ollamaURLs);
+    executePrompt (promptOrConversation) {
+        // NOTE! This function is really long and should be split up
+
         if (!this.ollamaURLs.hostURL) {
             console.error("Ollama not initalized");
             return;
         };
 
-        const data = {
-            model: prompt.model,
-            prompt: prompt.prompt
+        let promptInConversation = promptOrConversation instanceof ChatConversation;
+        
+        let fetchURL;
+        if (promptInConversation) 
+            fetchURL = this.ollamaURLs.hostURL + this.ollamaURLs.chatURL;
+        else
+            fetchURL = this.ollamaURLs.hostURL + this.ollamaURLs.promptURL;
+
+        let data = {};
+
+        let prompt;
+
+        // Add the prompt data. The data is different depending on whether it is
+        // a simple prompt or part of a conversation
+        if (promptInConversation) {
+            data.messages = promptOrConversation.getConversation();
+            prompt = Utils.getLastElement(promptOrConversation.prompts);
+        } else {
+            data.prompt = promptOrConversation.prompt;
+            prompt = promptOrConversation;
+        };
+
+        data.model = prompt.model;
+
+        
+
+
+        const request = {
+
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
         }
 
-        fetch(this.ollamaURLs.hostURL + this.ollamaURLs.promptURL, 
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
-        })
+
+        fetch(fetchURL, request)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP Error! Status: ${response.status}`);
@@ -123,6 +150,7 @@ class OllamaAPIContainer extends Callbacks {
                         prompt.callCallbacks("finished");
                         return;
                     };
+
     
                     // Converts bytes to string
                     let word = decoder.decode(value);
@@ -157,7 +185,7 @@ class OllamaAPIContainer extends Callbacks {
                     }
 
                     responses.forEach((response) => {
-                        this.#executePrompt_processSingleJSONObjectResponse(prompt, response);
+                        this.#executePrompt_processSingleJSONObjectResponse(prompt, response, promptInConversation);
                         
                     });
 
@@ -175,8 +203,16 @@ class OllamaAPIContainer extends Callbacks {
 
     };
 
-    #executePrompt_processSingleJSONObjectResponse(prompt, response) {
-        let textResponse = response["response"];
+    #executePrompt_processSingleJSONObjectResponse(prompt, response, isConversation = false) {
+
+        let textResponse;
+
+        if (isConversation)
+            textResponse = response.message.content;
+
+        else
+            textResponse = response.response;
+        
 
         if (textResponse == "undefined") alert("Undefined error!" + String(response));
 
@@ -189,7 +225,7 @@ class OllamaAPIContainer extends Callbacks {
         prompt.rawResponse += textResponse;
 
 
-        prompt.callCallbacks("streamUpdate", () => {console.log("test!")});
+        prompt.callCallbacks("streamUpdate", () => { console.log("test!")});
 
 
     };

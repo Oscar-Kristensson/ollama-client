@@ -18,5 +18,5 @@ class ChatPrompt extends Callbacks {
         this.isFinished = false;
         this.rawResponse = "";
         this.resultResponse = undefined;
-    }
-}
+    };
+};

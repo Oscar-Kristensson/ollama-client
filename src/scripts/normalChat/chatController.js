@@ -5,6 +5,10 @@ class ChatControllerClass {
         this.chatContainer = chatContainer;
         this.textInputArea = textInputArea;
 
+        this.conversation = new ChatConversation();
+
+        this.conversation.addCallback("streamUpdate", () => { console.log(this.conversation); }) // TEMP
+
         this.chatResponses = [];
         this.chatMessages = [];
 
@@ -23,7 +27,9 @@ class ChatControllerClass {
 
         const repsonse = new ChatResponse(this.chatContainer, prompt);
 
-        Ollama.executePrompt(prompt);
+        this.conversation.addPrompt(prompt);
+
+        Ollama.executePrompt(this.conversation);
     
     };
 };
