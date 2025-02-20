@@ -9,12 +9,13 @@ class OllamaAPIContainer extends Callbacks {
     };
 
 
-    initalize(hostURL = "http://127.0.0.1:11434/", promptURL = "api/generate", chatURL = "api/chat", modelsURL = "api/tags") { 
+    initalize(hostURL = "http://127.0.0.1:11434/", promptURL = "api/generate", chatURL = "api/chat", modelsURL = "api/tags", downloadModelURL = "api/pull") { 
         this.ollamaURLs = {
             hostURL: hostURL,
             promptURL: promptURL,
             chatURL: chatURL,
-            modelsURL: modelsURL
+            modelsURL: modelsURL,
+            downloadModelURL: downloadModelURL
         };
 
         // Contains all the prompts. Should the que be a feature?
@@ -29,7 +30,9 @@ class OllamaAPIContainer extends Callbacks {
 
         
         
-    }
+    };
+
+
 
     addToQue(prompt) {
         // Should this be a feature?
@@ -158,31 +161,21 @@ class OllamaAPIContainer extends Callbacks {
                         responseCache = "";
                     };
 
-                    
-    
-                    // Extracts the word from the reponse
-                    let responses = [];
-                    try {
-                        // Is this necessary (?) This solution is janky and messy!
 
-                        // Cache repsonses that are too long
-                        if (word.charAt(word.length - 2) !== "}") {
-                            responseCache += word;
-                            return readStream();
+                    console.log(word);
 
-                        } else if (word.includes('"done":false}\n{"model":')) 
-                            responses = word.split('"done":false}\n{"model":');
 
-                        else
-                            responses = [JSON.parse(word)];
+                    let responseChunks = word.split("}\n");
 
-                    }
-                    catch (error) 
-                    {
-                        console.error("Some error occured when parsing response :" + word + "\nError:" + error);
-                    }
+                    let responseObjects = [];
+                    responseChunks.forEach((chunk) => {
+                        if (chunk === "") return;
+                        console.log(chunk);
+                        responseObjects.push(JSON.parse(chunk + "}\n"));
+                    });
 
-                    responses.forEach((response) => {
+                    responseObjects.forEach((response) => {
+                        console.log(response);
                         this.#executePrompt_processSingleJSONObjectResponse(prompt, response, promptInConversation);
                         
                     });
