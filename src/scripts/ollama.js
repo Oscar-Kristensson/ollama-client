@@ -145,8 +145,6 @@ class OllamaAPIContainer extends Callbacks {
                     // Stops the reading when the prompt is done
                     if (done) {
                         prompt.isFinished = true;
-                        console.log("DONE!")
-                        console.log(">>>>>>", decoder.decode(value));
                         prompt.callCallbacks("finished");
                         return;
                     };

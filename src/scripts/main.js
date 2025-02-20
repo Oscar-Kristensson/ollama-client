@@ -24,7 +24,7 @@ messageComposeElement.addEventListener("keydown", (event) => {
 
 
 const sendButtonElement = document.querySelector(".button.send");
-sendButtonElement.addEventListener("click", () => { ChatController.sendMessage(); });
+sendButtonElement.addEventListener("click", () => { ChatController.sendMessage(model = testDropdown.getValue()); });
 
 
 const testContainer = document.querySelector(".testContainer");

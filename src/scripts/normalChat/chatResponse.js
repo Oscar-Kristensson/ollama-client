@@ -24,6 +24,11 @@ class ChatResponse {
         this.modelDisplayElement.innerText = prompt.model;
         this.informationBar.appendChild(this.modelDisplayElement);
 
+        this.tokensPerSecondDisplayElement = document.createElement("div");
+        this.tokensPerSecondDisplayElement.className = "displayElement";
+        this.tokensPerSecondDisplayElement.classList.add("tokensPerSecond");
+        this.informationBar.appendChild(this.tokensPerSecondDisplayElement);
+
         this.timeDisplayElement = document.createElement("div");
         this.timeDisplayElement.className = "displayElement";
         this.timeDisplayElement.classList.add("model");
@@ -43,6 +48,7 @@ class ChatResponse {
 
     finishedResponse() {
         this.timeDisplayElement.innerText = String(Math.round(this.prompt.resultResponse.total_duration / 10**6) / 10**3) + "s";
+        this.tokensPerSecondDisplayElement.innerText = String(Math.round(this.prompt.resultResponse.eval_count / this.prompt.resultResponse.eval_duration * 10**10) / 10**1) + "tokens/s";
         console.log(this.prompt.rawResponse);
     };
 
