@@ -32,5 +32,4 @@ class ChatConversation extends Callbacks {
 
         return conversationHistory;
     };
-
 };

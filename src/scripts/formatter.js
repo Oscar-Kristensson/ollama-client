@@ -79,7 +79,7 @@ function importFormatter() {
             if (rawParagraph == "") return;
 
             // Bullet list
-            if (rawParagraph[0] === "*" || rawParagraph[0] === "•") {
+            if ((rawParagraph[0] === "*" && rawParagraph[1] !== "*") || rawParagraph[0] === "•") {
                 if (tempBulletList === undefined) {
                     tempBulletList = new ListContainer(container, "bullet");
                     
@@ -89,6 +89,7 @@ function importFormatter() {
 
             };
             tempBulletList = undefined;
+            tempNumberedList = undefined;
 
 
             // Numbered list
