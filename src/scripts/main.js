@@ -1,3 +1,8 @@
+if (window.electronAPI === undefined) console.warn("The electron API could not be accessed. This could be " +
+    "due to the project running directly with a server rather than using node. The implications of this can " +
+    "be seen in the README: Running with an HTTP server/directly in a browser."
+);
+
 const formatter = importFormatter();
 
 

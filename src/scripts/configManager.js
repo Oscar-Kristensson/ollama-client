@@ -1,5 +1,5 @@
 // Load config file
-let config = undefined;
+let config = {};
 
 
 function checkAndFillOptions(element, key, defaultValue) {
@@ -11,6 +11,9 @@ function checkAndFillOptions(element, key, defaultValue) {
 };
 
 function validateConfig(config) {
+    if (config === undefined) config = {};
+
+
     const defaultValues = [
         ["ipAddress", "http://127.0.0.1:11434/"], 
         ["favoriteModel", "?"]
@@ -27,6 +30,11 @@ function validateConfig(config) {
 };
 
 function loadConfigFile() {
+    if (!window.electronAPI) {
+        validateConfig(config);
+        return Promise.resolve();
+    };
+
     return window.electronAPI.loadFile("save/config.json")
         .then(text => {
             config = JSON.parse(text);
@@ -39,11 +47,18 @@ function loadConfigFile() {
     })
 };
 
-loadConfigFile()
-    .then(() => {
-        Ollama.initalize(config.ipAddress);
-    })
+document.addEventListener("DOMContentLoaded", () => {
+    console.log("DOM", config);
+    loadConfigFile()
+        .then(() => {
+            Ollama.initalize(config.ipAddress);
+        })
+})
 
 function saveConfigFile() {
+    if (!window.electronAPI) {
+        return Promise.resolve();
+    };
+
     return window.electronAPI.writeFile("save/config.json", JSON.stringify(config, null, 4));
 };

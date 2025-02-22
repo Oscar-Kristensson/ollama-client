@@ -42,4 +42,7 @@ Comming soon! Unzip the program and click the ollama-client executable app (depe
 
 
 ### Running with an HTTP server/directly in a browser
+> **Note:** If running an HTTP server or directly in a browser some functionallity will not work, such as file operations.
+
+
 TBD
