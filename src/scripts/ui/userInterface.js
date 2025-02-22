@@ -1,3 +1,4 @@
+
 class _UserInterface {
     updateCurrentTime() {
         this.currentTime = new Date();
@@ -45,13 +46,12 @@ class _UserInterface {
 
     };
 
-}
+};
 
 const UserInterface = new _UserInterface();
 
 UserInterface.currentBackgroundTimePeriod = "";
 UserInterface.currentBackgroundTimePeriodStates = ["night", "morning", "day", "evening", "night"];
-
 
 UserInterface.updateUserInterfaceTimeBased();
 

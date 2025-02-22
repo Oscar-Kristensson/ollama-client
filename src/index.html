@@ -3,18 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <title>Ollama-Client</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles/index.css" />
     <link rel="stylesheet" href="styles/chatStyles.css" />
     <link rel="stylesheet" href="styles/customElements/customDropdown.css" />
-    <script>
-      // Find a better solution that automatically detects
-      const runningWithElectron = true;
-    </script>
     <script src="scripts/configManager.js" defer></script>
     <script src="scripts/fileOperations.js" defer></script>
     <script src="scripts/formatter.js" defer></script>
     <script src="scripts/utils.js" defer></script>
     <script src="scripts/callbacks.js" defer></script>
+    <script src="scripts/ui/leftNavBar.js" defer></script>
     <script src="scripts/ui/dropDownMenu.js" defer></script>
     <script src="scripts/normalChat/chatController.js" defer></script>
     <script src="scripts/normalChat/chatResponse.js" defer></script>
@@ -41,12 +39,11 @@
         <div class="conversationsContainer">
           <div class="label">Fun conversation</div>
           <div class="label">Funnier conversation</div>
+          <div class="label">NOTE! These do</div>
+          <div class="label">not work</div>
         </div>
         <div class="windowsContainer">
-          <div class="label">Chat</div>
-          <div class="label notavailable">Translate</div>
-          <div class="label notavailable">Task-based</div>
-          <div class="label">Settings</div>
+          <!-- Generated in leftNavBar.js -->
         </div>
       </div>
       <div class="window normalChat">       
@@ -92,6 +89,8 @@
           </div>
         </div>
       </div>
+
+      
     </div>
   </body>
 </html>

@@ -38,11 +38,10 @@ npm run make
 ```
 
 ### Windows/Mac/Linux standalone
-Comming soon! Unzip the program and click the ollama-client executable app (depending on your operating system).
+Comming soon™️! Unzip the program and click the ollama-client executable app (depending on your operating system).
 
 
 ### Running with an HTTP server/directly in a browser
 > **Note:** If running an HTTP server or directly in a browser some functionallity will not work, such as file operations.
 
-
-TBD
+This setup will depend on which server is used. The server should be set up in the src directory. The index.js and preload.js files are not needed.
