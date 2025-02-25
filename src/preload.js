@@ -8,5 +8,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     openFile: () => ipcRenderer.invoke('open-file'), // Secure communication
     loadFile: (filePath) => ipcRenderer.invoke('load-file', filePath),
     writeFile: (filePath, data) => ipcRenderer.invoke('write-file', filePath, data),
+    createFolder: (filePath) => ipcRenderer.invoke('create-folder', filePath)
 
 });

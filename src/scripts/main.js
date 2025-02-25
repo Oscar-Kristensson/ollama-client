@@ -3,6 +3,10 @@ if (window.electronAPI === undefined) console.warn("The electron API could not b
     "be seen in the README: Running with an HTTP server/directly in a browser."
 );
 
+// Create folder structure for saves
+window.electronAPI.createFolder("save/chats");
+
+
 const formatter = importFormatter();
 
 
@@ -51,6 +55,8 @@ Ollama.addCallback("cachedLocalModels", () => {
     });
     testDropdown.setOptions(modelNames, modelNames);
 });
+
+
 
 
 
