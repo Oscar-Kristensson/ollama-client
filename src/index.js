@@ -109,6 +109,7 @@ ipcMain.handle('write-file', async (event, filePath, data) => {
     console.log("Writing file", filePath);
     return fs.promises.writeFile(filePath, data, 'utf-8')
         .then(() => {
+            console.log("Succesfully wrote file!");
             return true;
         })
         .catch(error => {
@@ -118,13 +119,17 @@ ipcMain.handle('write-file', async (event, filePath, data) => {
 
 
 ipcMain.handle('create-folder', async (event, dirPath) => {
-    try {
-        await fs.promises.mkdir(dirPath, { recursive: true});
-        return true;
+    return new Promise(((resolve, reason) => {
+        try {
+            fs.promises.mkdir(dirPath, { recursive: true});
+            resolve();
+    
+        } catch (error) {
+            console.error("Error when creating a folder", error.message);
+            reason(error);
+        };
+    }));
 
-    } catch (error) {
-        throw new Error("Error creating folder: " + error.message);  
-    }
 });
 
 
