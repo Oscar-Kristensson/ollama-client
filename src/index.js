@@ -8,7 +8,7 @@ const started = require('electron-squirrel-startup');
 const { platform } = require('node:os');
 const { copyFileSync } = require('node:fs');
 const { rejects } = require('node:assert');
-const { error } = require('node:console');
+const { error, dir } = require('node:console');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -117,14 +117,14 @@ ipcMain.handle('write-file', async (event, filePath, data) => {
 });
 
 
-ipcMain.handle('create-folder', (event, dirPath) => {
-    return fs.promises.mkdir(dirPath, { recursive: true}, (error))
-        .then (() => {
-            return true;
-        })
-        .catch (error => {
-            throw new Error('Error creating folder: '+ error.message);
-        });
+ipcMain.handle('create-folder', async (event, dirPath) => {
+    try {
+        await fs.promises.mkdir(dirPath, { recursive: true});
+        return true;
+
+    } catch (error) {
+        throw new Error("Error creating folder: " + error.message);  
+    }
 });
 
 
