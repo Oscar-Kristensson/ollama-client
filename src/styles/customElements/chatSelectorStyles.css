@@ -1,0 +1,12 @@
+.conversationsContainer .label {
+    min-height: 48px !important;
+}
+
+
+.conversationsContainer {
+    overflow-y: auto;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+};
+

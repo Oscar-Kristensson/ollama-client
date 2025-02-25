@@ -9,6 +9,7 @@ const { platform } = require('node:os');
 const { copyFileSync } = require('node:fs');
 const { rejects } = require('node:assert');
 const { error, dir } = require('node:console');
+const { exec } = require('node:child_process');
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -132,6 +133,19 @@ ipcMain.handle('create-folder', async (event, dirPath) => {
 
 });
 
+
+ipcMain.handle('read-dir', async (event, path) => {
+    return new Promise((resolve, reason) => {
+        try {
+            const files = fs.promises.readdir(path);
+            console.log("Files: ", files);
+            resolve(files);
+
+        } catch (error) {
+            console.error("Error reading dir contents: " + error.message);
+        };
+    });
+});
 
 // Check if a save directory exists, create one otherwise
 

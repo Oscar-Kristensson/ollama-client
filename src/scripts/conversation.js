@@ -79,6 +79,8 @@ class ChatConversation extends Callbacks {
             name: this.conversationName
         };
 
+        console.log("Name:", this.conversationName);
+
         return window.electronAPI.writeFile(`save/chats/${this.startTime}.json`, JSON.stringify(data, null, 4));
     };
 
