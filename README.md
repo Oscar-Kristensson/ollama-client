@@ -37,6 +37,11 @@ Inorder to build the project from source, you will first need to be able to [run
 npm run make
 ```
 
+If you are on windows, you can use the following script to package and zip the application:
+```
+scripts/build
+```
+
 ### Windows/Mac/Linux standalone
 Comming soon™️! Unzip the program and click the ollama-client executable app (depending on your operating system).
 
