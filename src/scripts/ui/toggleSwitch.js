@@ -1,8 +1,8 @@
 
 
-class ToggleSwitch {
+class ToggleSwitch extends Callbacks {
     constructor (container) {
-        console.log("TESS!")
+        super();
         this.container = container;
         this.container.classList.add("toggleSwitch");
         this.marker = document.createElement("div");
@@ -20,5 +20,7 @@ class ToggleSwitch {
 
         else
             this.container.classList.remove("active");
+
+        this.callCallbacks("changed");
     };
 };

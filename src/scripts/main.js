@@ -61,3 +61,13 @@ Ollama.addCallback("cachedLocalModels", () => {
     });
     testDropdown.setOptions(modelNames, modelNames);
 });
+
+
+
+const saveChatToggleSwitchContainer = document.getElementById("saveChatToggleSwitch");
+const saveChatToggleSwitch = new ToggleSwitch(saveChatToggleSwitchContainer)
+saveChatToggleSwitch.addCallback("changed", () => {
+    ChatController.saveChat = saveChatToggleSwitch.checked;
+    if (ChatController.saveChat)
+        ChatController.conversation.export();
+});

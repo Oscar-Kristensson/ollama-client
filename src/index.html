@@ -22,10 +22,10 @@
     <script src="scripts/prompt.js" defer></script>
     <script src="scripts/conversation.js" defer></script>
     <script src="scripts/ollama.js" defer></script>
+    <script src="scripts/ui/toggleSwitch.js" defer></script>
     <script src="scripts/main.js" defer></script>
     <script src="scripts/ui/userInterface.js" defer></script>
     <script src="scripts/normalChat/chatSelector.js" defer></script>
-    <script src="scripts/ui/toggleSwitch.js" defer></script>
   </head>
   <body class="evening">
     <div class="testContainer">
@@ -37,6 +37,10 @@
       <div class="topBar normalChat">
         <div class="topBarPart left">
           <div class="LLMSelectElement"></div>
+          <div class="toggleSwitchContainer saveChatToggleContainer">
+            <label for="saveChatToggleSwitch">Save chat:</label>
+            <div id="saveChatToggleSwitch"></div>
+          </div>
         </div>
       </div>
       <div class="left-nav-bar">

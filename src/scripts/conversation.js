@@ -73,7 +73,6 @@ class ChatConversation extends Callbacks {
     };
 
     export () {
-        return;
         if (!window.electronAPI) {
             console.error("Electron API was not loaded");
             return;

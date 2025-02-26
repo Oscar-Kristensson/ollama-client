@@ -12,12 +12,14 @@ class ChatControllerClass {
         this.chatResponses = [];
         this.chatMessages = [];
 
+        this.saveChat = false;
+
 
     };
 
     finishedGeneratingMessage () {
-        
-        this.conversation.export();
+        if (this.saveChat)
+            this.conversation.export();
     };
 
     sendMessage(model = "llama3.2:3b") {

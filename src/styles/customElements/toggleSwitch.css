@@ -13,7 +13,7 @@
     border-radius: 25px;
     background-color: var(--inactiveBackgroundColor);
     position: relative;
-    transition: all 500ms ease-in-out;
+    transition: background-color 500ms ease-in-out;
 
 }
 
@@ -34,4 +34,17 @@
 
 .toggleSwitch.active .marker {
     left: calc(var(--width) / 2);
+}
+
+
+/* Unnecessary but for ease of use */
+.toggleSwitchContainer {
+    display: flex;
+    align-items: center;
+    margin-left: 2ch;
+}
+
+.toggleSwitchContainer label {
+    margin-right: 1ch;
+    width: max-content;
 }
