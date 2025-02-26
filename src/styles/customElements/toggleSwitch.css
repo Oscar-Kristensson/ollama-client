@@ -1,0 +1,37 @@
+
+
+.toggleSwitch {
+    --height: 25px;
+    --margin: 2px;
+    --width: 50px;
+    --inactiveBackgroundColor: hsl(0, 0%, 50%);
+    --activeBackgroundColor: hsl(120, 100%, 35%);
+
+    width: var(--width);
+    height: var(--height);
+    margin: calc(var(--margin)*2);
+    border-radius: 25px;
+    background-color: var(--inactiveBackgroundColor);
+    position: relative;
+    transition: all 500ms ease-in-out;
+
+}
+
+.marker {
+    position: absolute;
+    top: calc(-1 * var(--margin));
+    left: calc(-1 * var(--margin));
+    width: calc(var(--height) + var(--margin) * 2);
+    height: calc(var(--height) + var(--margin) * 2);
+    border-radius: 25px;
+    background-color: white;
+    transition: all 500ms ease-in-out;
+}
+
+.toggleSwitch.active {
+    background-color: var(--activeBackgroundColor);
+}
+
+.toggleSwitch.active .marker {
+    left: calc(var(--width) / 2);
+}
