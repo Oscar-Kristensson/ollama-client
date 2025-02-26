@@ -62,7 +62,16 @@ Ollama.addCallback("cachedLocalModels", () => {
     testDropdown.setOptions(modelNames, modelNames);
 });
 
-
+window.electronAPI.deleteFile("save/chats/test.txt")
+.then(success => {
+    if (!success)
+        console.log(">>>File not found!");
+    console.log("Deleted file!");
+})
+.catch(error => {
+    console.log("File deletion failed!");
+    console.error(error);
+})
 
 const saveChatToggleSwitchContainer = document.getElementById("saveChatToggleSwitch");
 const saveChatToggleSwitch = new ToggleSwitch(saveChatToggleSwitchContainer)
@@ -70,4 +79,6 @@ saveChatToggleSwitch.addCallback("changed", () => {
     ChatController.saveChat = saveChatToggleSwitch.checked;
     if (ChatController.saveChat)
         ChatController.conversation.export();
+    else
+        ChatController.conversation.deleteSave();
 });

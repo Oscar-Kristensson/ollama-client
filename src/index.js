@@ -147,6 +147,31 @@ ipcMain.handle('read-dir', async (event, path) => {
     });
 });
 
+ipcMain.handle('delete-file', (event, filePath) => {
+    return new Promise((resolve, reject) => {
+        if (!fs.existsSync(filePath)) {
+            console.error("Could not delete file "+ filePath + " because the file does not exist");
+            resolve(false);
+            return;
+        }
+
+        try {
+            fs.promises.unlink(filePath)
+            .then(response => {
+                resolve(true);
+            })
+            .catch(error => {
+                reason(error);
+            })
+    
+        } catch (error) {
+            console.error("Error in delete-file", error.message)
+            reason(error);
+            throw new Error("Error during file deletion: " + error.message);
+        };
+    });
+});
+
 // Check if a save directory exists, create one otherwise
 
 fs.promises.access("save/", fs.constants.F_OK)

@@ -77,6 +77,11 @@ class ChatConversation extends Callbacks {
             console.error("Electron API was not loaded");
             return;
         }
+
+        if (this.prompts.length === 0) {
+            console.warn("Did not save empty conversation");
+            return;
+        };
     
         const data = {
             startTime: this.startTime,
@@ -84,9 +89,26 @@ class ChatConversation extends Callbacks {
             name: this.conversationName
         };
 
-        console.log("Name:", this.conversationName);
-
         return window.electronAPI.writeFile(`save/chats/${this.startTime}.json`, JSON.stringify(data, null, 4));
+    };
+
+    deleteSave () {
+        if (!window.electronAPI) {
+            console.error("Electron API was not loaded");
+            return;
+        };
+
+        window.electronAPI.deleteFile(`save/chats/${this.startTime}.json`)
+        .then(success => {
+            if (success)
+                console.log("Deleted chat");
+            else
+                console.log("The file was already deleted!");
+        })
+        .catch(error => {
+            console.log("An error occured when deleting save: " + error.message);
+        });
+
     };
 
 
