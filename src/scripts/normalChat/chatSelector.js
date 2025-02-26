@@ -53,9 +53,7 @@ class ChatSelector {
     createChatElements () {
         console.log("Creating chat elements!", this.chatData);
 
-        for (let i = 0; i < this.chatData.length; i++) {
-            console.log(this.chatData[i]);
-            
+        for (let i = 0; i < this.chatData.length; i++) {            
             let name;
             if (this.chatData[i].hasOwnProperty("name")) 
                 name = this.chatData[i].name;
@@ -73,11 +71,11 @@ class ChatSelector {
 };
 
 
-
-window.electronAPI.readFolder("save/chats")
-    .then(files => {
-        new ChatSelector(conversationContainer, files)
-    })
-    .catch(error => {
-        console.error("Error reading folder:", error.message);
-    });
+if (window.electronAPI)
+    window.electronAPI.readFolder("save/chats")
+        .then(files => {
+            new ChatSelector(conversationContainer, files)
+        })
+        .catch(error => {
+            console.error("Error reading folder:", error.message);
+        });

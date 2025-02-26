@@ -4,10 +4,11 @@ if (window.electronAPI === undefined) console.warn("The electron API could not b
 );
 
 // Create folder structure for saves
-window.electronAPI.createFolder("save/chats")
-.catch(error => {
-    console.warn("Could not create folder structure");
-});
+if (window.electronAPI)
+    window.electronAPI.createFolder("save/chats")
+    .catch(error => {
+        console.warn("Could not create folder structure");
+    });
 
 
 

@@ -73,6 +73,12 @@ class ChatConversation extends Callbacks {
     };
 
     export () {
+        return;
+        if (!window.electronAPI) {
+            console.error("Electron API was not loaded");
+            return;
+        }
+    
         const data = {
             startTime: this.startTime,
             conversation: this.getConversation(),
