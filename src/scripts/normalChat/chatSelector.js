@@ -12,7 +12,6 @@ class ChatSelector {
     };
 
     createChatElement(name, index) {
-        console.log(name);
         const element = document.createElement("div");
         element.className = "label";
         element.innerText = name;
@@ -28,7 +27,6 @@ class ChatSelector {
     loadChats () {
         let loadedFilesCount = 0;
         this.chatFilesArray.forEach((name, i) => {
-            console.log(name);
             window.electronAPI.loadFile(`save/chats/${name}`)
             .then(value => {
                 return JSON.parse(value);
@@ -41,7 +39,6 @@ class ChatSelector {
             })
             .finally(() => {
                 loadedFilesCount++;
-                console.log(loadedFilesCount, this.chatFilesArray.length);
 
                 if (loadedFilesCount === this.chatFilesArray.length)
                     this.createChatElements();
@@ -51,8 +48,6 @@ class ChatSelector {
     };
 
     createChatElements () {
-        console.log("Creating chat elements!", this.chatData);
-
         for (let i = 0; i < this.chatData.length; i++) {            
             let name;
             if (this.chatData[i].hasOwnProperty("name")) 
