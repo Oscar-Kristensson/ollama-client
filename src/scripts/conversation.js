@@ -3,6 +3,7 @@
 class ChatConversation extends Callbacks {
     constructor (startTime = new Date()) {
         super();
+        console.warn("Created new chat conversation!", this);
         this.startTime = startTime;
         if (this.startTime instanceof Date) {
             const currentDate = new Date();
@@ -17,7 +18,18 @@ class ChatConversation extends Callbacks {
         }
 
         this.prompts = [];
+        this.conversationHistory = [];
 
+    };
+
+    loadConversationData (data) {
+        console.log("Loading conversation data", data);
+        this.conversationHistory = data;
+        console.log(this, this.conversationHistory);
+    };
+
+    clearPrompts () {
+        this.prompts = [];
     };
 
     addPrompt (prompt) {
@@ -25,7 +37,7 @@ class ChatConversation extends Callbacks {
     };
 
     getConversation () {
-        let conversationHistory = [];
+        let conversationHistory = this.conversationHistory;
 
         this.prompts.forEach((promptObject) => {
             conversationHistory.push({

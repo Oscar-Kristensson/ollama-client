@@ -3,6 +3,9 @@
 class ChatResponse {
     constructor (parent, prompt) {
         this.parent = parent;
+        
+        this.preloaded = typeof prompt === 'string';
+        console.log("Created chat response: ", this.preloaded);
 
         this.container = document.createElement("div");
         this.container.className = "messageContainer";
@@ -14,33 +17,41 @@ class ChatResponse {
         this.container.appendChild(this.messageTextContainer);
 
 
-        this.informationBar = document.createElement("div");
-        this.informationBar.className = "informationBar";
-        this.container.appendChild(this.informationBar);
+        if (!this.preloaded) {
+            this.informationBar = document.createElement("div");
+            this.informationBar.className = "informationBar";
+            this.container.appendChild(this.informationBar);
+    
+            this.modelDisplayElement = document.createElement("div");
+            this.modelDisplayElement.className = "displayElement";
+            this.modelDisplayElement.classList.add("model");
+            this.modelDisplayElement.innerText = prompt.model;
+            this.informationBar.appendChild(this.modelDisplayElement);
+    
+            this.tokensPerSecondDisplayElement = document.createElement("div");
+            this.tokensPerSecondDisplayElement.className = "displayElement";
+            this.tokensPerSecondDisplayElement.classList.add("tokensPerSecond");
+            this.informationBar.appendChild(this.tokensPerSecondDisplayElement);
+    
+            this.timeDisplayElement = document.createElement("div");
+            this.timeDisplayElement.className = "displayElement";
+            this.timeDisplayElement.classList.add("model");
+            this.timeDisplayElement.innerText = "Running";
+            this.informationBar.appendChild(this.timeDisplayElement);
+            this.informationBar.style.userSelect = "none";
 
-        this.modelDisplayElement = document.createElement("div");
-        this.modelDisplayElement.className = "displayElement";
-        this.modelDisplayElement.classList.add("model");
-        this.modelDisplayElement.innerText = prompt.model;
-        this.informationBar.appendChild(this.modelDisplayElement);
-
-        this.tokensPerSecondDisplayElement = document.createElement("div");
-        this.tokensPerSecondDisplayElement.className = "displayElement";
-        this.tokensPerSecondDisplayElement.classList.add("tokensPerSecond");
-        this.informationBar.appendChild(this.tokensPerSecondDisplayElement);
-
-        this.timeDisplayElement = document.createElement("div");
-        this.timeDisplayElement.className = "displayElement";
-        this.timeDisplayElement.classList.add("model");
-        this.timeDisplayElement.innerText = "Running";
-        this.informationBar.appendChild(this.timeDisplayElement);
-        this.informationBar.style.userSelect = "none";
+        };
 
         this.prompt = prompt;
 
-        this.prompt.addCallback("streamUpdate", () => { this.updateResponse(); });
 
-        this.prompt.addCallback("finished", () => { this.finishedResponse() });
+        if (!this.preloaded) {
+            this.prompt.addCallback("streamUpdate", () => { this.updateResponse(); });
+    
+            this.prompt.addCallback("finished", () => { this.finishedResponse() });
+        } else {
+            formatter.formatToHTML(this.messageTextContainer, this.prompt);
+        };
 
         this.parent.appendChild(this.container);       
 
@@ -60,5 +71,10 @@ class ChatResponse {
 
 
         // Scrolls the parent to the bottom, but not currently implemented: this.parent.scrollTop = this.parent.scrollHeight;   
+    };
+
+    removeHTML() {
+        console.log("Removing chat resposne!");
+        this.container.remove();
     };
 };

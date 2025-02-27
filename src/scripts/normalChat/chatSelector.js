@@ -5,9 +5,7 @@ class ChatSelector {
     constructor (container, chatFilesArray) {
         this.container = container;
         this.chatFilesArray = chatFilesArray;
-        console.log(this.chatFilesArray);
         this.chatData = Array(chatFilesArray.length);
-        console.log(this.chatData);
         this.loadChats();
     };
 

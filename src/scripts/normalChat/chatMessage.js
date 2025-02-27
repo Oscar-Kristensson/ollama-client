@@ -8,12 +8,16 @@ class ChatMessage {
 
         this.messageTextContainer = document.createElement("div");
         this.messageTextContainer.className = "messageText";
-        this.messageTextContainer.innerText = prompt.prompt;
+        this.messageTextContainer.innerText = prompt;
         this.container.appendChild(this.messageTextContainer);
 
 
         this.prompt = prompt;
         parent.appendChild(this.container);
 
+    };
+
+    removeHTML() {
+        this.container.remove();
     };
 };

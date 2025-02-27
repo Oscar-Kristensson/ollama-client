@@ -5,15 +5,79 @@ class ChatControllerClass {
         this.chatContainer = chatContainer;
         this.textInputArea = textInputArea;
 
-        this.conversation = new ChatConversation();
+        
+        this.loadConversation(undefined, false);
 
-        this.conversation.addCallback("streamUpdate", () => { console.log(this.conversation); }) // TEMP
 
         this.chatResponses = [];
         this.chatMessages = [];
 
         this.saveChat = false;
 
+
+    };
+
+    clearConversationHTML () {
+        console.log("Clearing conversation", this.chatMessages, this.chatResponses);
+        this.chatMessages.forEach(chatMessage => {
+            chatMessage.removeHTML();
+        });
+
+        this.chatResponses.forEach(chatResponse => {
+            chatResponse.removeHTML();
+        });
+
+        this.chatResponses = [];
+        
+        this.chatMessages = [];
+    };
+
+    loadConversation (conversationData = undefined, clearOld = true) {
+        if (clearOld)
+            this.clearConversationHTML();
+
+        else
+            this.saveChat = true;
+
+        console.log("Loading new conversation");
+
+        let startTime = new Date();
+
+        
+        
+        
+        if (conversationData)
+            if (conversationData.hasOwnProperty("startTime"))
+                startTime = conversationData.startTime;
+        
+        this.conversation = new ChatConversation(startTime);
+
+        if (conversationData) 
+            this.conversation.loadConversationData(conversationData.conversation);
+
+
+
+
+        if (conversationData)
+            conversationData.conversation.forEach(message => {
+
+                console.log(message);
+                const prompt = new ChatPrompt(message.content);
+                if (message.role === "user") {
+                    const chatMessageObject = new ChatMessage(this.chatContainer, message.content);
+                    this.chatMessages.push(chatMessageObject);
+
+                } else if (message.role === "assistant") {
+                    console.log(message.content)
+                    const chatResponseObject = new ChatResponse(this.chatContainer, message.content);
+                    this.chatResponses.push(chatResponseObject);
+                };
+
+                
+            });
+        // const message = new ChatMessage(this.chatContainer, prompt);
+
+        
 
     };
 
@@ -32,9 +96,11 @@ class ChatControllerClass {
 
         prompt.addCallback("finished", () => { this.finishedGeneratingMessage(); });
 
-        const message = new ChatMessage(this.chatContainer, prompt);
+        const message = new ChatMessage(this.chatContainer, prompt.prompt);
+        this.chatMessages.push(message);
 
         const repsonse = new ChatResponse(this.chatContainer, prompt);
+        this.chatResponses.push(repsonse);
 
         this.conversation.addPrompt(prompt);
 
