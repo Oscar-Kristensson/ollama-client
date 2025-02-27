@@ -39,8 +39,10 @@ npm run make
 
 If you are on windows, you can use the following script to package and zip the application:
 ```
-scripts/build
+scripts/build.bat
 ```
+
+The same script is also available for MacOS.
 
 ### Windows/Mac/Linux standalone
 Comming soon™️! Unzip the program and click the ollama-client executable app (depending on your operating system).
