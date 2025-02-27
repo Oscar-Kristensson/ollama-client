@@ -3,6 +3,8 @@ call npm run make
 
 echo Creating and clearing release dir
 
+mkdir out
+
 cd out
 del /Q /S release
 mkdir release

@@ -37,12 +37,20 @@ Inorder to build the project from source, you will first need to be able to [run
 npm run make
 ```
 
+If are on Linux, you may need to install rpm. The rpm installation can be done with the following commands:
+```
+sudo pat update
+sudo apt install rpm
+```
+
+
+
 If you are on windows, you can use the following script to package and zip the application:
 ```
 scripts/build.bat
 ```
 
-The same script is also available for MacOS and Linux.
+The same script is also available for MacOS.
 
 ### Windows/Mac/Linux standalone
 Comming soon™️! Unzip the program and click the ollama-client executable app (depending on your operating system).

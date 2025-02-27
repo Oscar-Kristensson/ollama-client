@@ -5,6 +5,8 @@ npm run make
 
 echo "Creating and clearing release dir"
 
+mkdir out
+
 cd out
 rm -rf release
 mkdir release
