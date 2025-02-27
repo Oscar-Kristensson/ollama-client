@@ -13,8 +13,17 @@ class ToggleSwitch extends Callbacks {
         this.container.addEventListener("click", () => { this.toggle(); })
     };
 
-    toggle() {
-        this.checked = !this.checked;
+    setState(checked) {
+        const previousState = this.checked;
+        this.checked = checked;
+
+        if (this.checked === previousState)
+            return;        
+        
+        this.update();
+    };
+
+    update() {
         if (this.checked)
             this.container.classList.add("active");
 
@@ -22,5 +31,11 @@ class ToggleSwitch extends Callbacks {
             this.container.classList.remove("active");
 
         this.callCallbacks("changed");
+
+    }
+
+    toggle() {
+        this.checked = !this.checked;
+        this.update();
     };
 };

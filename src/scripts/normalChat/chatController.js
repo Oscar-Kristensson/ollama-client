@@ -33,11 +33,11 @@ class ChatControllerClass {
     };
 
     loadConversation (conversationData = undefined, clearOld = true) {
-        if (clearOld)
+        if (clearOld) {
             this.clearConversationHTML();
-
-        else
+            saveChatToggleSwitch.setState(true);
             this.saveChat = true;
+        };
 
         console.log("Loading new conversation");
 
@@ -62,7 +62,6 @@ class ChatControllerClass {
             conversationData.conversation.forEach(message => {
 
                 console.log(message);
-                const prompt = new ChatPrompt(message.content);
                 if (message.role === "user") {
                     const chatMessageObject = new ChatMessage(this.chatContainer, message.content);
                     this.chatMessages.push(chatMessageObject);

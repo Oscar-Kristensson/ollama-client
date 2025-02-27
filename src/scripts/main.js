@@ -12,6 +12,16 @@ if (window.electronAPI)
 
 
 
+const saveChatToggleSwitchContainer = document.getElementById("saveChatToggleSwitch");
+const saveChatToggleSwitch = new ToggleSwitch(saveChatToggleSwitchContainer)
+saveChatToggleSwitch.addCallback("changed", () => {
+    ChatController.saveChat = saveChatToggleSwitch.checked;
+    if (ChatController.saveChat)
+        ChatController.conversation.export();
+    else
+        ChatController.conversation.deleteSave();
+});
+
 
 const formatter = importFormatter();
 
@@ -63,12 +73,3 @@ Ollama.addCallback("cachedLocalModels", () => {
 });
 
 
-const saveChatToggleSwitchContainer = document.getElementById("saveChatToggleSwitch");
-const saveChatToggleSwitch = new ToggleSwitch(saveChatToggleSwitchContainer)
-saveChatToggleSwitch.addCallback("changed", () => {
-    ChatController.saveChat = saveChatToggleSwitch.checked;
-    if (ChatController.saveChat)
-        ChatController.conversation.export();
-    else
-        ChatController.conversation.deleteSave();
-});

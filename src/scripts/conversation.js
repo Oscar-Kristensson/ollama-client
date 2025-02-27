@@ -37,7 +37,7 @@ class ChatConversation extends Callbacks {
     };
 
     getConversation () {
-        let conversationHistory = this.conversationHistory;
+        let conversationHistory = [ ... this.conversationHistory ];
 
         this.prompts.forEach((promptObject) => {
             conversationHistory.push({
@@ -53,6 +53,8 @@ class ChatConversation extends Callbacks {
                 "content": promptObject.rawResponse
             });
         });
+
+        console.log("Is the same?", this.conversationHistory === conversationHistory)
 
         return conversationHistory;
     };
@@ -100,6 +102,8 @@ class ChatConversation extends Callbacks {
             conversation: this.getConversation(),
             name: this.conversationName
         };
+
+        console.log("Saving conversation:", data.conversation);
 
         return window.electronAPI.writeFile(`save/chats/${this.startTime}.json`, JSON.stringify(data, null, 4));
     };

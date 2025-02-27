@@ -1,9 +1,9 @@
 
 
-
 class ChatPrompt extends Callbacks {
     constructor (prompt, model) {
         super();
+        console.log("Created new prompt: ", prompt);
 
         // Input
         this.prompt = prompt;
