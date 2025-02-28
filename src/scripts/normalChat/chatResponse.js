@@ -67,7 +67,9 @@ class ChatResponse {
     updateResponse(prompt) {
         while (this.messageTextContainer.children.length !== 0)
             this.messageTextContainer.children[0].remove();
-        formatter.formatToHTML(this.messageTextContainer, this.prompt.rawResponse);
+        
+        this.messageTextContainer.innerText = this.prompt.rawResponse;
+        //formatter.formatToHTML(this.messageTextContainer, this.prompt.rawResponse);
 
 
         // Scrolls the parent to the bottom, but not currently implemented: this.parent.scrollTop = this.parent.scrollHeight;   

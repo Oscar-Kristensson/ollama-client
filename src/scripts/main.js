@@ -23,7 +23,6 @@ saveChatToggleSwitch.addCallback("changed", () => {
 });
 
 
-const formatter = importFormatter();
 
 
 const tempTestOutputElement = document.getElementById("tempTestOutputElement");

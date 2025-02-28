@@ -14,6 +14,12 @@ class _Utils {
         return list[list.length - 1];
     };
 
+
+    isNumber(str) {
+        return /^\d/.test(str);
+    };
+    
+
 }
 
 const Utils = new _Utils();
