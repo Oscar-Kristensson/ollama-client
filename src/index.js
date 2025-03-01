@@ -2,6 +2,10 @@ const { app, BrowserWindow, dialog, ipcMain } = require('electron');
 
 const fs = require('fs');
 
+const { spawn } = require('child_process');
+
+// Start Ollama
+
 // import { app, BrowserWindow } from 'electron';
 const path = require('node:path');
 const started = require('electron-squirrel-startup');
@@ -171,6 +175,17 @@ ipcMain.handle('delete-file', (event, filePath) => {
         };
     });
 });
+
+
+
+let ollama;
+
+ipcMain.handle('launch-ollama', (event) => {
+    ollama = spawn('ollama', ['serve']);
+});
+
+
+
 
 // Check if a save directory exists, create one otherwise
 

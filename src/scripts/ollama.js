@@ -8,8 +8,15 @@ class OllamaAPIContainer extends Callbacks {
 
     };
 
+    sendStart() {
+        if (window.electronAPI && config.autoLaunchOllama) {
+            console.log("Starting Ollama");
+            window.electronAPI.launchOllama();
+        };        
+    };
 
-    initalize(hostURL = "http://127.0.0.1:11434/", promptURL = "api/generate", chatURL = "api/chat", modelsURL = "api/tags", downloadModelURL = "api/pull") { 
+
+    configure(hostURL = "http://127.0.0.1:11434/", promptURL = "api/generate", chatURL = "api/chat", modelsURL = "api/tags", downloadModelURL = "api/pull") {
         this.ollamaURLs = {
             hostURL: hostURL,
             promptURL: promptURL,
@@ -17,6 +24,44 @@ class OllamaAPIContainer extends Callbacks {
             modelsURL: modelsURL,
             downloadModelURL: downloadModelURL
         };
+
+        console.log("Configured Ollama", this.ollamaURLs);
+    };
+
+    ping() {
+        console.log("Pinged Ollama")
+        return fetch(this.ollamaURLs.hostURL)
+        .then((response) => {
+            // Check if the response is ok (status code 200-299)
+            if (!response.ok) {
+                throw new Error('Network response was not ok: ' + response.statusText);
+            }
+            
+            // Parse the JSON response
+            return response.text();
+        })
+        .then(result => {
+            if (result === "Ollama is running") {
+                console.log("Ollama is running!");
+                return true;
+            }
+            else {
+                console.log("Ollama is not running");
+                return false;
+            }
+        })
+        .catch(error => {
+            console.error("There was a problem with the fetch operation. This could be because the Ollama API is not on the following url: " + this.ollamaURLs.hostURL + " Error: " + error.message);
+            return false;
+        });
+    };
+
+
+    initalize() {
+        if (!this.ollamaURLs) {
+            console.error("Ollama must be configured before initalization");
+            return;
+        }
 
         // Contains all the prompts. Should the que be a feature?
         this.promptQue = [];

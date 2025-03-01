@@ -58,6 +58,7 @@ const LLMSelectElement = document.querySelector(".LLMSelectElement");
 
 const testDropdown = new CustomDropdown(LLMSelectElement, ["Model"], [1], CSS_Classes = ["test"], parentIsContainer = true);
 
+
 Ollama.addCallback("cachedLocalModels", () => {
     let modelNames = [];
 

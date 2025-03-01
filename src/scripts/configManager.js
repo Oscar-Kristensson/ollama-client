@@ -16,7 +16,9 @@ function validateConfig(config) {
 
     const defaultValues = [
         ["ipAddress", "http://127.0.0.1:11434/"], 
-        ["favoriteModel", "?"]
+        ["favoriteModel", "?"],
+        ["autoLaunchOllama", false],
+        ["allowAutoRelaunch", false]
     ]
 
     let hasChanged = false;
@@ -50,7 +52,52 @@ function loadConfigFile() {
 document.addEventListener("DOMContentLoaded", () => {
     loadConfigFile()
         .then(() => {
-            Ollama.initalize(config.ipAddress);
+            Ollama.configure(config.ipAddress);
+
+            // Starts Ollama automatically
+            if (config.autoLaunchOllama)
+                Ollama.sendStart();
+        })
+        .then(() => {
+            // Checks if the Ollama API is accessible
+            return Ollama.ping();
+        })
+
+        .then(result => {
+            if (!result) {
+                // Restarts the Ollama server
+                let couldNotStart = false;
+                console.warn("Could not reach Ollama, trying by restarting Ollama");
+
+                if (config.allowAutoRelaunch) {
+                    console.log("Sending start");
+                    Ollama.sendStart();
+                    console.log("Pining Ollama");
+                    Ollama.ping()
+                    .then(result => {
+                        console.log("Pinged Ollama")
+                        if (!result) {
+                            couldNotStart = true;
+                            console.error("Could not start Ollama")
+                        } else {
+                            Ollama.initalize();
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Could not reach Ollama. Error: " + error.message);
+                    });
+                    if (couldNotStart)
+                        return;
+
+                } else {
+                    return;
+                }
+            } else {
+                Ollama.initalize();
+            };
+        })
+        .catch(error => {
+            console.log("An error occured: ", error.message);
         })
 })
 

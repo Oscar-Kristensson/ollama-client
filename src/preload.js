@@ -11,5 +11,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
     createFolder: (filePath) => ipcRenderer.invoke('create-folder', filePath),
     readFolder: (folderPath) => ipcRenderer.invoke('read-dir', folderPath),
     deleteFile: (filePath) => ipcRenderer.invoke("delete-file", filePath),
+    launchOllama: () => ipcRenderer.invoke('launch-ollama')
 
 });
