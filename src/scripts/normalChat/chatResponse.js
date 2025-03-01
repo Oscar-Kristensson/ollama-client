@@ -50,7 +50,7 @@ class ChatResponse {
     
             this.prompt.addCallback("finished", () => { this.finishedResponse() });
         } else {
-            formatter.formatToHTML(this.messageTextContainer, this.prompt);
+            formatToHTML(this.prompt.rawResponse, this.messageTextContainer);
         };
 
         this.parent.appendChild(this.container);       
@@ -58,6 +58,8 @@ class ChatResponse {
     }
 
     finishedResponse() {
+        this.messageTextContainer.innerHTML = "";
+        formatToHTML(this.prompt.rawResponse, this.messageTextContainer);
         this.timeDisplayElement.innerText = String(Math.round(this.prompt.resultResponse.total_duration / 10**6) / 10**3) + "s";
         this.tokensPerSecondDisplayElement.innerText = String(Math.round(this.prompt.resultResponse.eval_count / this.prompt.resultResponse.eval_duration * 10**10) / 10**1) + "tokens/s";
         console.log(this.prompt.rawResponse);

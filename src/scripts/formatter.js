@@ -16,6 +16,188 @@ function isNumberedListItem(line) {
 
 
 
+class HTMLFormattedObjectInterface {
+    constructor (tag = "div") {
+        this.lines = [];
+        this.container = document.createElement(tag);
+    };
+
+
+    addLine(line) {
+        if (!line instanceof Line) {
+            console.warn("Can not add a line that is not of type Line");
+            return;
+        };
+
+        this.lines.push(line);
+    };
+
+    finished () {
+        
+
+    }; // Overide this function in the children
+
+    lazyPrint() {
+        let string = "<HTMLFormattedObject>";
+        this.lines.forEach(line => {
+            string += line.content;
+        });
+        string += "</HTMLFormattedObject>";
+        return string;
+    };
+
+
+    getObject() {
+        return this.container;
+    };
+};
+
+
+class BulletList extends HTMLFormattedObjectInterface {
+    constructor () {
+        super("ul");
+    };
+
+    #trimLine(line) {
+        return line.content.slice(1);
+    };
+
+    finished () {
+        this.lines.forEach(line => {
+            const bulletPointContainer = document.createElement("li");
+            bulletPointContainer.innerText = this.#trimLine(line);
+            this.container.appendChild(bulletPointContainer);
+
+        });
+    };
+
+    lazyPrint() {
+        let string = "<BulletList>";
+        this.lines.forEach(line => {
+            string += line.content;
+        });
+        string += "</BulletList>"
+        return string;
+    };
+
+};
+
+
+
+class NumberedList extends HTMLFormattedObjectInterface {
+    constructor () {
+        super("ol");
+    };
+
+    #trimLine(line) {
+        let startStringLength = 0;
+        for (let charNumber = 0; charNumber < line.content.length; charNumber++) {
+            const char = line.content[charNumber];
+
+            if (!Utils.isNumber(char) && char === ".") {
+                startStringLength = charNumber;
+                break;
+            };
+        };
+
+        return line.content.slice(startStringLength + 2);
+    };
+
+
+    finished () {
+        this.lines.forEach(line => {
+            const bulletPointContainer = document.createElement("li");
+            let test = this.#trimLine(line);
+            console.log("Test>", test);
+            bulletPointContainer.innerText = test; 
+            this.container.appendChild(bulletPointContainer);
+
+        });
+    };
+
+    lazyPrint() {
+        let string = "<NumberedList>";
+        this.lines.forEach(line => {
+            string += line.content;
+        });
+        string += "</NumberedList>"
+        return string;
+    };
+
+};
+
+
+
+class Paragraph extends HTMLFormattedObjectInterface {
+    constructor () {
+        super("p");
+    };
+
+    finished () {
+        console.log(this.lines);
+        let htmlContent = "";
+        this.lines.forEach((line, index) => {
+            if (index !== 0)
+                htmlContent += "<br>";
+            htmlContent += line.content;
+            console.log("Line:", line);
+        });
+
+        this.container.innerHTML = htmlContent;
+    };
+
+    lazyPrint() {
+        let string = "<Paragraph>";
+        this.lines.forEach(line => {
+            string += line.content;
+        });
+        string += "</Paragraph>"
+        return string;
+    };
+
+};
+
+
+class Heading extends HTMLFormattedObjectInterface {
+    constructor () {
+        super("h1");
+    };
+
+    finished () {
+        let string = this.lines[0].content.slice(2, this.lines[0].content.length - 2);
+
+        this.container.innerHTML = string;
+    };
+
+    lazyPrint() {
+        let string = "<Heading>";
+        this.lines.forEach(line => {
+            string += line.content;
+        });
+        string += "</Heading>"
+        return string;
+    };
+
+};
+
+
+class Table extends HTMLFormattedObjectInterface {
+    constructor () {
+        super();
+    };
+
+    lazyPrint() {
+        let string = "<Table>";
+        this.lines.forEach(line => {
+            string += line.content;
+        });
+        string += "</Table>"
+        return string;
+    };
+
+};
+
+
 
 class Line {
     constructor (lineContent, lineNumber, isLastLine = false) {
@@ -39,7 +221,8 @@ class Line {
 
 
 
-function formatToHTML(string) {
+function formatToHTML(string, container) {
+    console.log("Formatting:", string);
     let stringLines = string.split("\n");
     let tmpDebugString = "";
     let tmpLines = [];
@@ -54,10 +237,22 @@ function formatToHTML(string) {
     console.log(lines);
 
     let inBulletList = false;
+    let currentBulletListObject = undefined;
+
     let inNumberedList = false;
+    let currentNumberedListObject = undefined;
+
     let inCode = false;
     let previousLineWasEmpty = false;
+
+    let currentParagraphObject = undefined;
+    let inParagraph = false;
+
     let inTable = false;
+    let currentTableObject = undefined;
+
+
+    let HTMLContent = [];
 
 
     for (let lineNumber = 0; lineNumber < lines.length; lineNumber++) {
@@ -67,11 +262,23 @@ function formatToHTML(string) {
         // Processing heading
         if (line.isHeading) {
             console.log("Heading!", line.number);
+            const heading = new Heading();
+            heading.addLine(line);
+            heading.finished();
+            HTMLContent.push(heading);
             continue;
         };
 
         // Processing list
         if (line.isBulletListItem) {
+            if (!inBulletList) {
+                console.log("Enterd bullet list", line.number);
+                currentBulletListObject = new BulletList();
+                HTMLContent.push(currentBulletListObject);
+                
+            };
+            currentBulletListObject.addLine(line);
+
             inBulletList = true;
         }
 
@@ -82,13 +289,18 @@ function formatToHTML(string) {
     
             if (leftBulletList || leftBulletListWithNewLine) {
                 inBulletList = false;
+                currentBulletListObject.finished();
                 console.log("Left bullet list", line.number);
-            }
+            };
 
         };
 
         // Processing numbered list
-        if (isNumberedListItem(line.content)) {
+        if (line.isNumberListItem) {
+            if (!inNumberedList) {
+                currentNumberedListObject = new NumberedList();
+                HTMLContent.push(currentNumberedListObject);
+            }
             inNumberedList = true;
             
         }
@@ -99,11 +311,15 @@ function formatToHTML(string) {
 
             if (leftNumberedListWithNewLine || leftNumberedListWithOtherLine) {
                 inNumberedList = false;
+                currentNumberedListObject.finished();
                 console.log("Left number list", line.number);
             }
 
             
         };
+
+        if (inNumberedList)
+            currentNumberedListObject.addLine(line);
 
 
         // Code processing
@@ -120,13 +336,57 @@ function formatToHTML(string) {
 
         // Table processing
         if (line.isTable) {
+            if (!inTable) {
+                currentTableObject = new Table();
+                HTMLContent.push(currentTableObject);
+            };
+
+            currentTableObject.addLine(line);
+
+            inTable = true;
             console.log("Table!", line.number);
+            
+        } else if (inTable) {
+            console.log("Left table", line.number);
+            currentTableObject.finished();
+            inTable = false;
+        };
+
+
+        // Normal paragraph
+        const enterdParagraph = !(inBulletList || inNumberedList || inCode || line.isTable) && !inParagraph && !line.isEmpty;
+        const leftParagraph = ((inBulletList || inNumberedList || inCode || line.isTable) && inParagraph) || (inParagraph && line.isEmpty);
+
+        if (enterdParagraph) {
+            currentParagraphObject = new Paragraph();
+            HTMLContent.push(currentParagraphObject);
+            inParagraph = true;
+            console.log("Entered paragraph: ", line.number);
         }
+
+        else if (leftParagraph) {
+            inParagraph = false;
+            currentParagraphObject.finished();
+            console.log("Exited paragraph", line.number);
+        };
+
+
+        if (inParagraph)
+            currentParagraphObject.addLine(line);
+
+
 
 
         previousLineWasEmpty = line.content === "";
 
     };
+
+    console.log(HTMLContent);
+
+    HTMLContent.forEach(object => {
+        container.appendChild(object.getObject());
+        console.log(object.lazyPrint(), testContainer);
+    });
 };
 
 
@@ -241,4 +501,8 @@ And here comes a table, generated by AI:
 `
 
 
-formatToHTML(testingData);
+
+document.addEventListener("DOMContentLoaded", () => {
+    return;
+    formatToHTML(testingData, testContainer);
+});
