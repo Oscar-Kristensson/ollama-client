@@ -18,7 +18,6 @@ class ChatControllerClass {
     };
 
     clearConversationHTML () {
-        console.log("Clearing conversation", this.chatMessages, this.chatResponses);
         this.chatMessages.forEach(chatMessage => {
             chatMessage.removeHTML();
         });
@@ -39,7 +38,6 @@ class ChatControllerClass {
             this.saveChat = true;
         };
 
-        console.log("Loading new conversation");
 
         let startTime = new Date();
 
@@ -61,13 +59,11 @@ class ChatControllerClass {
         if (conversationData)
             conversationData.conversation.forEach(message => {
 
-                console.log(message);
                 if (message.role === "user") {
                     const chatMessageObject = new ChatMessage(this.chatContainer, message.content);
                     this.chatMessages.push(chatMessageObject);
 
                 } else if (message.role === "assistant") {
-                    console.log(message.content)
                     const chatResponseObject = new ChatResponse(this.chatContainer, message.content);
                     this.chatResponses.push(chatResponseObject);
                 };

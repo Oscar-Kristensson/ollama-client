@@ -5,7 +5,6 @@ class ChatResponse {
         this.parent = parent;
         
         this.preloaded = typeof prompt === 'string';
-        console.log("Created chat response: ", this.preloaded);
 
         this.container = document.createElement("div");
         this.container.className = "messageContainer";
@@ -50,7 +49,12 @@ class ChatResponse {
     
             this.prompt.addCallback("finished", () => { this.finishedResponse() });
         } else {
-            formatToHTML(this.prompt.rawResponse, this.messageTextContainer);
+            try {
+                formatToHTML(this.prompt.rawResponse, this.messageTextContainer);
+            } catch (error) {
+                console.error("An error occured when formatting to HTML");
+                this.messageTextContainer.innerText = this.prompt.rawResponse;
+            };
         };
 
         this.parent.appendChild(this.container);       
@@ -62,7 +66,6 @@ class ChatResponse {
         formatToHTML(this.prompt.rawResponse, this.messageTextContainer);
         this.timeDisplayElement.innerText = String(Math.round(this.prompt.resultResponse.total_duration / 10**6) / 10**3) + "s";
         this.tokensPerSecondDisplayElement.innerText = String(Math.round(this.prompt.resultResponse.eval_count / this.prompt.resultResponse.eval_duration * 10**10) / 10**1) + "tokens/s";
-        console.log(this.prompt.rawResponse);
     };
 
 
@@ -71,14 +74,12 @@ class ChatResponse {
             this.messageTextContainer.children[0].remove();
         
         this.messageTextContainer.innerText = this.prompt.rawResponse;
-        //formatter.formatToHTML(this.messageTextContainer, this.prompt.rawResponse);
 
 
         // Scrolls the parent to the bottom, but not currently implemented: this.parent.scrollTop = this.parent.scrollHeight;   
     };
 
     removeHTML() {
-        console.log("Removing chat resposne!");
         this.container.remove();
     };
 };

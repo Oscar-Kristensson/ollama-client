@@ -7,6 +7,15 @@
     
 }
 
+
+.messageContainer .code {
+    white-space: pre;
+}
+
+.messageContainer h1 {
+    font-size: 1.25rem;
+}
+
 .messageContainer {
     background-color: rgba(0, 0, 0, 0.5);
     padding: 12px;

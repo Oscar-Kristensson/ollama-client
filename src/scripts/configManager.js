@@ -48,7 +48,6 @@ function loadConfigFile() {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("DOM", config);
     loadConfigFile()
         .then(() => {
             Ollama.initalize(config.ipAddress);

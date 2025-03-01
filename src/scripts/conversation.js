@@ -3,7 +3,6 @@
 class ChatConversation extends Callbacks {
     constructor (startTime = new Date()) {
         super();
-        console.warn("Created new chat conversation!", this);
         this.startTime = startTime;
         if (this.startTime instanceof Date) {
             const currentDate = new Date();
@@ -23,9 +22,7 @@ class ChatConversation extends Callbacks {
     };
 
     loadConversationData (data) {
-        console.log("Loading conversation data", data);
         this.conversationHistory = data;
-        console.log(this, this.conversationHistory);
     };
 
     clearPrompts () {
@@ -54,20 +51,15 @@ class ChatConversation extends Callbacks {
             });
         });
 
-        console.log("Is the same?", this.conversationHistory === conversationHistory)
 
         return conversationHistory;
     };
 
     
     getAndGenerateConversationName () {
-        console.log("Generating name!");
-
         if (this.prompts.length === 0)
             return;
         
-        console.log(this.prompts[0]);
-
         return new Promise((resolve, reason) => {
             const prompt = new ChatPrompt(`What would you call a this conversation? \n Prompt: ${this.prompts[0].prompt}. Answer only and only with a descriptive name consisting of a single or few words. The name needs to let the user know the subject area. Answer example: "Quantum Computing"`, "llama3.2:1b");
             prompt.addCallback("finished", () => {
@@ -102,8 +94,6 @@ class ChatConversation extends Callbacks {
             conversation: this.getConversation(),
             name: this.conversationName
         };
-
-        console.log("Saving conversation:", data.conversation);
 
         return window.electronAPI.writeFile(`save/chats/${this.startTime}.json`, JSON.stringify(data, null, 4));
     };

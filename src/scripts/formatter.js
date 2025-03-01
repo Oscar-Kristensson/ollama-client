@@ -20,8 +20,8 @@ class HTMLFormattedObjectInterface {
     constructor (tag = "div") {
         this.lines = [];
         this.container = document.createElement(tag);
+        this.isFinished = false;
     };
-
 
     addLine(line) {
         if (!line instanceof Line) {
@@ -33,19 +33,15 @@ class HTMLFormattedObjectInterface {
     };
 
     finished () {
-        
+        this.isFinished = true;
+        this.onfinished();
 
-    }; // Overide this function in the children
-
-    lazyPrint() {
-        let string = "<HTMLFormattedObject>";
-        this.lines.forEach(line => {
-            string += line.content;
-        });
-        string += "</HTMLFormattedObject>";
-        return string;
+    }; 
+    
+    onfinished() {
+        this.container.innerText = this.lines.toString();
+        // Overide this function in the children
     };
-
 
     getObject() {
         return this.container;
@@ -54,7 +50,7 @@ class HTMLFormattedObjectInterface {
 
 
 class BulletList extends HTMLFormattedObjectInterface {
-    constructor () {
+    constructor() {
         super("ul");
     };
 
@@ -62,7 +58,8 @@ class BulletList extends HTMLFormattedObjectInterface {
         return line.content.slice(1);
     };
 
-    finished () {
+    onfinished () {
+        this.isFinished = true;
         this.lines.forEach(line => {
             const bulletPointContainer = document.createElement("li");
             bulletPointContainer.innerText = this.#trimLine(line);
@@ -70,22 +67,12 @@ class BulletList extends HTMLFormattedObjectInterface {
 
         });
     };
-
-    lazyPrint() {
-        let string = "<BulletList>";
-        this.lines.forEach(line => {
-            string += line.content;
-        });
-        string += "</BulletList>"
-        return string;
-    };
-
 };
 
 
 
 class NumberedList extends HTMLFormattedObjectInterface {
-    constructor () {
+    constructor() {
         super("ol");
     };
 
@@ -104,100 +91,106 @@ class NumberedList extends HTMLFormattedObjectInterface {
     };
 
 
-    finished () {
-        this.lines.forEach(line => {
+    onfinished() {
+            this.lines.forEach(line => {
             const bulletPointContainer = document.createElement("li");
             let test = this.#trimLine(line);
-            console.log("Test>", test);
+
             bulletPointContainer.innerText = test; 
             this.container.appendChild(bulletPointContainer);
 
         });
     };
-
-    lazyPrint() {
-        let string = "<NumberedList>";
-        this.lines.forEach(line => {
-            string += line.content;
-        });
-        string += "</NumberedList>"
-        return string;
-    };
-
 };
 
 
 
 class Paragraph extends HTMLFormattedObjectInterface {
-    constructor () {
+    constructor() {
         super("p");
     };
 
-    finished () {
-        console.log(this.lines);
+    onfinished() {
         let htmlContent = "";
         this.lines.forEach((line, index) => {
             if (index !== 0)
                 htmlContent += "<br>";
             htmlContent += line.content;
-            console.log("Line:", line);
         });
 
         this.container.innerHTML = htmlContent;
     };
-
-    lazyPrint() {
-        let string = "<Paragraph>";
-        this.lines.forEach(line => {
-            string += line.content;
-        });
-        string += "</Paragraph>"
-        return string;
-    };
-
 };
 
 
 class Heading extends HTMLFormattedObjectInterface {
-    constructor () {
+    constructor() {
         super("h1");
     };
 
-    finished () {
+    onfinished() {
         let string = this.lines[0].content.slice(2, this.lines[0].content.length - 2);
 
         this.container.innerHTML = string;
     };
-
-    lazyPrint() {
-        let string = "<Heading>";
-        this.lines.forEach(line => {
-            string += line.content;
-        });
-        string += "</Heading>"
-        return string;
-    };
-
 };
 
 
 class Table extends HTMLFormattedObjectInterface {
-    constructor () {
-        super();
+    constructor() {
+        super("table");
     };
 
-    lazyPrint() {
-        let string = "<Table>";
-        this.lines.forEach(line => {
-            string += line.content;
+    onfinished() {
+        this.lines.forEach((line, index) => {
+            const isLastRow = index + 1 === this.lines.length;
+            let row = document.createElement("tr")
+            const isHeaderRow = line.content.includes("| --- |");
+            const nextIsHeaderRow = !isLastRow && this.lines[index + 1].content.includes("| --- |");
+
+            if (isHeaderRow)
+                return;
+
+            let tagName = "td";
+            if (nextIsHeaderRow)
+                tagName = "th";
+
+            let columns = line.content.split("|");
+            delete columns[0];
+            delete columns[columns.length - 1];
+
+            columns.forEach(column => {
+                const tdOrTh = document.createElement(tagName);
+                tdOrTh.innerText = column;
+                row.appendChild(tdOrTh);
+            });
+
+            this.container.appendChild(row);
         });
-        string += "</Table>"
-        return string;
     };
-
 };
 
+class Code extends HTMLFormattedObjectInterface {
+    constructor() {
+        super("div");
+        this.container.className = "code";
 
+    };
+
+    onfinished() {
+        let firstLine = this.lines[0];
+        let codeLines = this.lines.slice(2);
+
+        let codeString = "";
+        codeLines.forEach((line, lineNumber) => {
+            codeString += line.content;
+            if (lineNumber !== codeLines.length - 1)
+                codeString += "\n";
+        });
+
+        this.container.innerText = codeString;
+    };
+};
 
 class Line {
     constructor (lineContent, lineNumber, isLastLine = false) {
@@ -222,19 +215,15 @@ class Line {
 
 
 function formatToHTML(string, container) {
-    console.log("Formatting:", string);
     let stringLines = string.split("\n");
-    let tmpDebugString = "";
     let tmpLines = [];
     stringLines.forEach((stringLine, number) => {
         tmpLines.push(new Line(stringLine, number, stringLines.length - 1 === number));
-        tmpDebugString += `${number}: ${stringLine}\n`;
     });
 
-    console.log(tmpDebugString);
 
     const lines = tmpLines;
-    console.log(lines);
+    delete tmpLines;
 
     let inBulletList = false;
     let currentBulletListObject = undefined;
@@ -243,6 +232,8 @@ function formatToHTML(string, container) {
     let currentNumberedListObject = undefined;
 
     let inCode = false;
+    let currentCodeObject = undefined;
+
     let previousLineWasEmpty = false;
 
     let currentParagraphObject = undefined;
@@ -261,7 +252,6 @@ function formatToHTML(string, container) {
 
         // Processing heading
         if (line.isHeading) {
-            console.log("Heading!", line.number);
             const heading = new Heading();
             heading.addLine(line);
             heading.finished();
@@ -272,7 +262,6 @@ function formatToHTML(string, container) {
         // Processing list
         if (line.isBulletListItem) {
             if (!inBulletList) {
-                console.log("Enterd bullet list", line.number);
                 currentBulletListObject = new BulletList();
                 HTMLContent.push(currentBulletListObject);
                 
@@ -290,7 +279,6 @@ function formatToHTML(string, container) {
             if (leftBulletList || leftBulletListWithNewLine) {
                 inBulletList = false;
                 currentBulletListObject.finished();
-                console.log("Left bullet list", line.number);
             };
 
         };
@@ -312,7 +300,6 @@ function formatToHTML(string, container) {
             if (leftNumberedListWithNewLine || leftNumberedListWithOtherLine) {
                 inNumberedList = false;
                 currentNumberedListObject.finished();
-                console.log("Left number list", line.number);
             }
 
             
@@ -323,17 +310,25 @@ function formatToHTML(string, container) {
 
 
         // Code processing
+        
         if (line.isCodeStartOrEnd) {
             inCode = !inCode;
-
-            if (inCode)
-                console.log("In code", line.number);
-
-            else
-                console.log("Exited code", line.number);
+            
+            if (inCode) {
+                currentCodeObject = new Code();
+                HTMLContent.push(currentCodeObject);
+                currentCodeObject.addLine(line);
+            }
+            
+            else {
+                currentCodeObject.finished();
+                continue;
+            };
         };
-
-
+        
+        if (inCode)
+            currentCodeObject.addLine(line);
+        
         // Table processing
         if (line.isTable) {
             if (!inTable) {
@@ -344,10 +339,8 @@ function formatToHTML(string, container) {
             currentTableObject.addLine(line);
 
             inTable = true;
-            console.log("Table!", line.number);
             
         } else if (inTable) {
-            console.log("Left table", line.number);
             currentTableObject.finished();
             inTable = false;
         };
@@ -361,13 +354,11 @@ function formatToHTML(string, container) {
             currentParagraphObject = new Paragraph();
             HTMLContent.push(currentParagraphObject);
             inParagraph = true;
-            console.log("Entered paragraph: ", line.number);
         }
 
         else if (leftParagraph) {
             inParagraph = false;
             currentParagraphObject.finished();
-            console.log("Exited paragraph", line.number);
         };
 
 
@@ -381,11 +372,16 @@ function formatToHTML(string, container) {
 
     };
 
-    console.log(HTMLContent);
+
+    [currentBulletListObject, currentNumberedListObject, currentParagraphObject, currentTableObject, currentCodeObject].forEach(object => {
+        if (object === undefined)
+            return;
+        if (!object.isFinished)
+            object.finished();
+    });
 
     HTMLContent.forEach(object => {
         container.appendChild(object.getObject());
-        console.log(object.lazyPrint(), testContainer);
     });
 };
 

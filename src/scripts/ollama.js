@@ -161,21 +161,15 @@ class OllamaAPIContainer extends Callbacks {
                         responseCache = "";
                     };
 
-
-                    console.log(word);
-
-
                     let responseChunks = word.split("}\n");
 
                     let responseObjects = [];
                     responseChunks.forEach((chunk) => {
                         if (chunk === "") return;
-                        console.log(chunk);
                         responseObjects.push(JSON.parse(chunk + "}\n"));
                     });
 
                     responseObjects.forEach((response) => {
-                        console.log(response);
                         this.#executePrompt_processSingleJSONObjectResponse(prompt, response, promptInConversation);
                         
                     });
