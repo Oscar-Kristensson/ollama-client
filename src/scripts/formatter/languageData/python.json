@@ -1,0 +1,17 @@
+[
+    {
+        "name": "keywords",
+        "content": ["and", "as", "assert", "async", "await", "break", "class", "continue", "del", "if", "elif", "else", "except", "finally", "for", "from", "global", "import", "in", "is", "nonlocal", "not", "or", "pass", "raise", "return", "try", "while", "with", "yield"],
+        "color": "#ff00ff"
+    },
+    {
+        "name": "bools",
+        "content": ["True", "False", "None"],
+        "color": "#00ffff"
+    },
+    {
+        "name": "functions",
+        "content": ["def", "class", "lambda"],
+        "color": "#ffff00"
+    }
+]

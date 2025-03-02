@@ -182,7 +182,7 @@ class Table extends HTMLFormattedObjectInterface {
 
             columns.forEach(column => {
                 const tdOrTh = document.createElement(tagName);
-                tdOrTh.innerText = formatInlineMarkdownToHTML(column);
+                tdOrTh.innerText = column;
                 row.appendChild(tdOrTh);
             });
 
@@ -200,6 +200,8 @@ class Code extends HTMLFormattedObjectInterface {
 
     onfinished() {
         let firstLine = this.lines[0];
+        this.language = firstLine.content.slice(3);
+
         let codeLines = this.lines.slice(2);
 
         let codeString = "";
@@ -209,7 +211,16 @@ class Code extends HTMLFormattedObjectInterface {
                 codeString += "\n";
         });
 
-        this.container.innerText = codeString;
+        formatCode(this.language, codeString)
+        .then(formattedCode => {
+            console.log(formattedCode);
+            this.container.innerHTML = formattedCode;
+        })
+        .catch(error => {
+            console.error("An error occured during code formattting: " + error.message);
+            this.container.innerText = codeString;
+        })
+
     };
 };
 

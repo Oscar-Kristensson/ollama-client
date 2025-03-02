@@ -78,6 +78,11 @@ class _Utils {
     isNumber(str) {
         return /^\d/.test(str);
     };
+
+
+    encapsulate(mainString, subString, beforeString, afterString) {
+        return mainString.replaceAll(subString, `${beforeString}${subString}${afterString}`);
+    };
     
 
 }

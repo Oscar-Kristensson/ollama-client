@@ -105,12 +105,6 @@ class ChatConversation extends Callbacks {
         };
 
         window.electronAPI.deleteFile(`save/chats/${this.startTime}.json`)
-        .then(success => {
-            if (success)
-                console.log("Deleted chat");
-            else
-                console.log("The file was already deleted!");
-        })
         .catch(error => {
             console.log("An error occured when deleting save: " + error.message);
         });
