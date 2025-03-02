@@ -59,7 +59,6 @@ class ChatSelector {
     };
 
     openChat(index) {
-        console.log("NOT IMPLEMENTED: OPEN CHAT", index);
         ChatController.loadConversation(this.chatData[index]);
     };
 };

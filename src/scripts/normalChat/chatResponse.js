@@ -48,11 +48,20 @@ class ChatResponse {
             this.prompt.addCallback("streamUpdate", () => { this.updateResponse(); });
     
             this.prompt.addCallback("finished", () => { this.finishedResponse() });
+
         } else {
             try {
-                formatToHTML(this.prompt.rawResponse, this.messageTextContainer);
+                let string;
+                if (this.prompt instanceof ChatPrompt)
+                    string = this.prompt.rawResponse;
+                    
+                else
+                    string = this.prompt;
+
+                formatToHTML(string, this.messageTextContainer);
+                
             } catch (error) {
-                console.error("An error occured when formatting to HTML");
+                console.error("An error occured when formatting to HTML:", error.message);
                 this.messageTextContainer.innerText = this.prompt.rawResponse;
             };
         };

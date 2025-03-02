@@ -1,18 +1,39 @@
+/**
+ * Checks if a given string represents a bullet list item.
+ * 
+ * A bullet list item starts with either an asterisk (*) or a bullet (•) character.
+ *
+ * @param {string} line - The string to check.
+ * @returns {boolean} True if the line is a bullet list item, false otherwise.
+ */
 function isBulletListItem(line) {
     return line.startsWith("*") || line.startsWith("•");
 }
 
+/**
+ * Checks if a given string represents a numbered list item.
+ * 
+ * A numbered list item consists of numbers followed by optional decimal points.
+ *
+ * @param {string} line - The string to check.
+ * @returns {boolean} True if the line is a numbered list item, false otherwise.
+ */
 function isNumberedListItem(line) {
     for (let charNumber = 0; charNumber < line.length; charNumber++) {
         const char = line[charNumber];
 
+        // If we encounter a non-digit character and it's not at the start of the line, return false
         if (!Utils.isNumber(char)) {
-            return (char === "." && charNumber !== 0)
-        };
-
+            return char === "." && charNumber !== 0;
+        }
     }
+
+    // If we've iterated over the entire line without returning false, it's not a numbered list item
     return false;
 };
+
+
+
 
 
 
@@ -39,7 +60,7 @@ class HTMLFormattedObjectInterface {
     }; 
     
     onfinished() {
-        this.container.innerText = this.lines.toString();
+        this.container.innerHTML = formatInlineMarkdownToHTML(this.lines.toString());
         // Overide this function in the children
     };
 
@@ -62,7 +83,7 @@ class BulletList extends HTMLFormattedObjectInterface {
         this.isFinished = true;
         this.lines.forEach(line => {
             const bulletPointContainer = document.createElement("li");
-            bulletPointContainer.innerText = this.#trimLine(line);
+            bulletPointContainer.innerHTML = formatInlineMarkdownToHTML(this.#trimLine(line));
             this.container.appendChild(bulletPointContainer);
 
         });
@@ -96,7 +117,7 @@ class NumberedList extends HTMLFormattedObjectInterface {
             const bulletPointContainer = document.createElement("li");
             let test = this.#trimLine(line);
 
-            bulletPointContainer.innerText = test; 
+            bulletPointContainer.innerHTML = formatInlineMarkdownToHTML(test); 
             this.container.appendChild(bulletPointContainer);
 
         });
@@ -118,7 +139,7 @@ class Paragraph extends HTMLFormattedObjectInterface {
             htmlContent += line.content;
         });
 
-        this.container.innerHTML = htmlContent;
+        this.container.innerHTML = formatInlineMarkdownToHTML(htmlContent);
     };
 };
 
@@ -131,7 +152,7 @@ class Heading extends HTMLFormattedObjectInterface {
     onfinished() {
         let string = this.lines[0].content.slice(2, this.lines[0].content.length - 2);
 
-        this.container.innerHTML = string;
+        this.container.innerHTML = formatInlineMarkdownToHTML(string);
     };
 };
 
@@ -161,7 +182,7 @@ class Table extends HTMLFormattedObjectInterface {
 
             columns.forEach(column => {
                 const tdOrTh = document.createElement(tagName);
-                tdOrTh.innerText = column;
+                tdOrTh.innerText = formatInlineMarkdownToHTML(column);
                 row.appendChild(tdOrTh);
             });
 
@@ -384,23 +405,6 @@ function formatToHTML(string, container) {
         container.appendChild(object.getObject());
     });
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

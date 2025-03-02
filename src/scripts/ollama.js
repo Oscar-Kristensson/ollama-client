@@ -9,10 +9,8 @@ class OllamaAPIContainer extends Callbacks {
     };
 
     sendStart() {
-        if (window.electronAPI && config.autoLaunchOllama) {
-            console.log("Starting Ollama");
+        if (window.electronAPI && config.autoLaunchOllama)
             window.electronAPI.launchOllama();
-        };        
     };
 
 
@@ -24,12 +22,9 @@ class OllamaAPIContainer extends Callbacks {
             modelsURL: modelsURL,
             downloadModelURL: downloadModelURL
         };
-
-        console.log("Configured Ollama", this.ollamaURLs);
     };
 
     ping() {
-        console.log("Pinged Ollama")
         return fetch(this.ollamaURLs.hostURL)
         .then((response) => {
             // Check if the response is ok (status code 200-299)
@@ -42,7 +37,6 @@ class OllamaAPIContainer extends Callbacks {
         })
         .then(result => {
             if (result === "Ollama is running") {
-                console.log("Ollama is running!");
                 return true;
             }
             else {
