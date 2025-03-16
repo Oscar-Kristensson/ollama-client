@@ -1,7 +1,14 @@
 const conversationContainer = document.querySelector(".conversationsContainer");
 
-
+/**
+ * Creates and controlls the elements for the conversation selector
+ */
 class ChatSelector {
+    /**
+     * Creates a new ChatSelector instance.
+     * @param {HTMLElement} container - The container where the HTML elements are added
+     * @param {Array} chatFilesArray - An array with the filenames for the conversations
+     */
     constructor (container, chatFilesArray) {
         this.container = container;
         this.chatFilesArray = chatFilesArray;
@@ -9,6 +16,11 @@ class ChatSelector {
         this.loadChats();
     };
 
+    /**
+     * Adds a conversation to the list
+     * @param {String} name - The displayed conversation name
+     * @param {Number} index - The storage location of the conversation data
+     */
     createChatElement(name, index) {
         const element = document.createElement("div");
         element.className = "label";
@@ -45,6 +57,9 @@ class ChatSelector {
         });
     };
 
+    /**
+     * Creates the chat elements from the chatData
+     */
     createChatElements () {
         for (let i = 0; i < this.chatData.length; i++) {            
             let name;
@@ -57,6 +72,7 @@ class ChatSelector {
         };
 
     };
+
 
     openChat(index) {
         ChatController.loadConversation(this.chatData[index]);

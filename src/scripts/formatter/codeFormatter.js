@@ -50,10 +50,8 @@ async function formatCode(language, code) {
         });
     };
 
-    console.log("!!!", language);
 
     let keywordClasses = languageData[language];
-    console.log(keywordClasses);
     
     let procssedCode = code;
 

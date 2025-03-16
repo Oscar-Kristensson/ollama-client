@@ -1,5 +1,6 @@
-
-
+/**
+ * Contains the HTML message elemenet
+ */
 class ChatMessage {
     constructor (parent, prompt) {
         this.container = document.createElement("div");

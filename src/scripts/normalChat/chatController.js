@@ -5,9 +5,7 @@ class ChatControllerClass {
         this.chatContainer = chatContainer;
         this.textInputArea = textInputArea;
 
-        
         this.loadConversation(undefined, false);
-
 
         this.chatResponses = [];
         this.chatMessages = [];
@@ -70,9 +68,9 @@ class ChatControllerClass {
 
                 
             });
-        // const message = new ChatMessage(this.chatContainer, prompt);
 
-        
+
+        // const message = new ChatMessage(this.chatContainer, prompt);
 
     };
 

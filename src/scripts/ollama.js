@@ -1,19 +1,33 @@
 
 
 
-
+/**
+ * Class that contains the api for communicating with Ollama
+ */
 class OllamaAPIContainer extends Callbacks {
+    /**
+     * Creates an instance of the Ollama API. Note that the instance needs to be configured and initalized before use.
+     */
     constructor () {
         super();
-
     };
 
+    /**
+     * Starts the ollama server
+     */
     sendStart() {
         if (window.electronAPI && config.autoLaunchOllama)
             window.electronAPI.launchOllama();
     };
 
-
+    /**
+    * Starts the ollama server
+     * @param {String} hostURL - The location of the ollama API
+     * @param {String} promptURL - The path to the generation URL
+     * @param {String} chatURL - The path to the conversation generation URL
+     * @param {String} modelsURL - The path to the loaded models URL
+     * @param {String} downloadModelURL - The path to the download models URL
+    */
     configure(hostURL = "http://127.0.0.1:11434/", promptURL = "api/generate", chatURL = "api/chat", modelsURL = "api/tags", downloadModelURL = "api/pull") {
         this.ollamaURLs = {
             hostURL: hostURL,
@@ -74,6 +88,7 @@ class OllamaAPIContainer extends Callbacks {
 
 
     addToQue(prompt) {
+        console.error("Should this be a feature?");
         // Should this be a feature?
         if (prompt.isFinished) {
             console.error("Cannot add a prompt that is already finished!");
