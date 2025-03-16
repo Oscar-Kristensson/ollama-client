@@ -40,6 +40,8 @@ function loadLanguageData(language) {
 
 
 async function formatCode(language, code) {
+    // Note: This is a very basic implementation for syntax highlighting and should be improved in the future
+
     if (!languageData.hasOwnProperty(language)){
         await loadLanguageData(language)
         .catch(error => {
@@ -57,9 +59,7 @@ async function formatCode(language, code) {
 
     keywordClasses.forEach(keywordClass => {
         let color = keywordClass.color;
-        console.log(keywordClass.name);
         keywordClass.content.forEach(keyword => {
-            console.log(keyword);
             procssedCode = Utils.encapsulate(procssedCode, ` ${keyword} `, `<span style="color: ${color};">`, "</span>")
             procssedCode = Utils.encapsulate(procssedCode, `\n${keyword} `, `<span style="color: ${color};">`, "</span>")
         });   
