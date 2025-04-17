@@ -1,0 +1,77 @@
+.section {
+    background-color: rgba(0, 0, 0, 0.25);
+    padding: 16px;
+}
+
+.section:nth-child(2n) {
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+
+.section > h2 {
+    padding: 16px;
+}
+
+
+
+.downloadContainer .currentDownloadProcessContainer:nth-of-type(2n) {
+    background-color: rgba(0, 0, 0, 0.25);
+}
+
+
+.downloadContainer .modelNameElement {
+    font-size: 1.25rem;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.downloadContainer .taskContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.downloadContainer .taskContainer .progressElement,
+.downloadContainer .taskContainer .pullElement,
+.downloadContainer .taskContainer .dataProgressElement {
+    margin-right: 8px;
+}
+
+.downloadContainer .modelInputElement {
+    outline: none;
+    border: none;
+    color: white;
+    background-color: rgb(0, 0, 0, 0.25);
+    padding: 8px;
+    border-radius: 4px;
+}
+
+
+.downloadContainer .informationElement {
+    margin-bottom: 8px;
+}
+
+.downloadContainer button {
+    background-color: hsla(0, 0%, 0%, 0.42);
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    margin-right: 3ch;
+    margin: 4px;
+    transition: all 250ms ease-in-out;
+    cursor: pointer;
+}
+
+.downloadContainer button:hover{
+    background-color: hsla(0, 0%, 0%, 0.6);
+}
+
+.installedModelsContainer {
+    overflow-x: scroll;
+}
+
+.installedModelsContainer #installedModelsTable {
+    width: max-content;
+
+}

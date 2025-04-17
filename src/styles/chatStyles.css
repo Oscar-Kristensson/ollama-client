@@ -137,15 +137,14 @@
     color: white;
 }
 
-.window.normalChat {
-    display: grid;
+.window.chat {
     height: 100%;
     grid-template-areas: 
         "chat"
         "messageCompose";
 
     grid-template-rows: 1fr 200px;
-    grid-template-columns: minmax(auto, 20cm);
+    grid-template-columns: minmax(auto, 25cm);
     justify-content: center;
 
     padding-bottom: 0 !important;

@@ -83,6 +83,12 @@ class _Utils {
     encapsulate(mainString, subString, beforeString, afterString) {
         return mainString.replaceAll(subString, `${beforeString}${subString}${afterString}`);
     };
+
+
+    formatNumber(number, prefixValue, decimals = 0) {
+        let value = Math.round(number/10**(prefixValue-decimals)) / (10**decimals);
+        return value;
+    }
     
 
 }

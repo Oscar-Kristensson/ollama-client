@@ -61,7 +61,7 @@ body.morning {
     grid-template-columns: 200px 1fr;
     grid-template-rows: auto minmax(0, 1fr);
     grid-template-areas: 
-        "nav-topbar topbar"
+        "left-nav-bar topbar"
         "left-nav-bar mainContent";
 }
 
@@ -71,8 +71,13 @@ body.morning {
     padding: 20px;
     grid-area: mainContent;
     background-color: rgba(0, 0, 0, 0.5);
-
 }
+
+
+.appContainer .window.hide {
+    display: none !important;
+}
+
 
 .appContainer .topBar {
     grid-area: topbar;
@@ -123,4 +128,21 @@ body.morning {
     align-content: center;
     transition: all 250ms ease-in-out;
     cursor: pointer;
-};
+}
+
+.appContainer .window.chat,
+.appContainer .window.settings,
+.appContainer .topBar.chat {
+    display: none;
+}
+
+.appContainer.chat .window.chat,
+.appContainer.chat .topBar.chat  {
+    display: grid;
+
+}
+
+.appContainer.settings .window.settings {
+    display: block;
+
+}

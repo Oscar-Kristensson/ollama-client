@@ -1,6 +1,4 @@
 
-
-
 /**
  * Class that contains the api for communicating with Ollama
  */
@@ -79,8 +77,6 @@ class OllamaAPIContainer extends Callbacks {
         this.cacheLocalModels();
 
         // Return a promise (or some other form of callback)
-
-
         
         
     };
@@ -135,6 +131,133 @@ class OllamaAPIContainer extends Callbacks {
 
         return false;
     };
+
+
+    installModel(model, 
+        onupdateCallback = (latest, currentPull, completedData, totalData) => {
+            console.log(`Latest: ${latest}, Current Pull: ${currentPull}, CompletedData: ${completedData}, Total Data: ${totalData}`);
+        },
+        onfinish = () => {console.log("Finished Download")}
+            
+    ){
+
+        if (this.isModelInstalled(model))
+            console.log("Is already installed!");
+
+
+        const body =  {
+            model: model
+        }
+
+
+        const request = {
+
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(body)
+        }
+
+
+        fetch(this.ollamaURLs.hostURL + this.ollamaURLs.downloadModelURL, request)
+        .then(response => {
+            /* Response: 
+            {"status":"pulling dbe81da1e4ba","digest":"sha256:dbe81da1e4bad3cc6ccb77540915ffe53e7a3ac0745ffa5e9d4626d39c15e09a","total":815310432,"completed":394494560}
+             */
+
+            if (!response.ok) 
+                throw new Error(`HTTP Error! Status: ${response.status}`);
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder("utf-8");
+
+            let previousPull = "";
+            let completed = 0;
+            let total = 0;
+
+            const readStream = () => {
+                return reader.read().then(({ done, value }) => {
+                    // Stops the reading when the prompt is done
+                    if (done) {
+                        onfinish();
+                        return;
+                    };
+
+    
+                    // Converts bytes to string
+                    let string = decoder.decode(value);
+                    console.log(string);
+
+                    let chunks = string.split("}\n{");
+                    if (chunks.length > 1) console.log("!!!");
+
+                    for (let i = 0; i < chunks.length; i++) {
+                        console.log("=======", "\nChunk:", chunks[i], i)
+                        let correctedChunk;
+                        const isFirstChunk = i === 0;
+                        const isLastChunk = i === chunks.length - 1;
+                        if (isFirstChunk && chunks.length === 1) {
+                            correctedChunk = chunks[i];
+                        }
+                        else if (isFirstChunk) {
+                            correctedChunk = chunks[i] + "}";
+                        } else if (isLastChunk) {
+                            correctedChunk = "{" + chunks[i];
+                        } else
+                            correctedChunk = "{" + chunks[i] + "}";
+
+
+                        let data;
+                        try {
+                            data = JSON.parse(correctedChunk);
+    
+                        } catch (error) {
+                            console.error("Some error when parsing!", error.message, "Input>", string, "CC>", correctedChunk);
+                            return readStream();
+                        };
+
+                        let currentPull;
+                        
+                        try {
+                            currentPull = data.status.split(" ")[1];
+                        } catch (error) {
+                            console.error("Some error trying to split data.status!", error.message, "Input>", data.status);
+                        }
+    
+                        const newPull = currentPull !== previousPull;
+                        const downloadingProcess = data.hasOwnProperty("completed");
+    
+                        if (data.hasOwnProperty("total"))
+                            total = data.total;
+    
+                        let latest = "nothing";
+    
+                        if (newPull)
+                            latest = "newPull";
+
+                        else if (data.status === "success")
+                            latest = "finished";
+                        
+                        else if (downloadingProcess) {
+                            latest = "downloading";
+                            completed = data.completed;
+                        };
+    
+                        onupdateCallback(latest, currentPull, completed, total);
+                        previousPull = currentPull;  
+                    };
+
+
+                    return readStream();
+                });
+            };
+
+            readStream();
+
+            
+        })
+    }
 
 
     executePrompt (promptOrConversation) {
@@ -271,5 +394,7 @@ class OllamaAPIContainer extends Callbacks {
 }
 
 
-
+/**
+ * @type {OllamaAPIContainer}
+ */
 const Ollama = new OllamaAPIContainer();

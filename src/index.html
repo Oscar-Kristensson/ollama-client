@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <title>Ollama-Client</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles/settingsStyles.css">
     <link rel="stylesheet" href="styles/index.css" />
     <link rel="stylesheet" href="styles/chatStyles.css" />
     <link rel="stylesheet" href="styles/customElements/customDropdown.css" />
@@ -28,6 +29,8 @@
     <script src="scripts/main.js" defer></script>
     <script src="scripts/ui/userInterface.js" defer></script>
     <script src="scripts/normalChat/chatSelector.js" defer></script>
+    <script src="scripts/ui/settingsMenu.js" defer></script>
+    <script src="scripts/ui/windowSwitcher.js" defer></script>
   </head>
   <body class="evening">
     <div class="testContainer">
@@ -35,8 +38,8 @@
     </div>
 
   
-    <div class="appContainer">
-      <div class="topBar normalChat">
+    <div class="appContainer chat">
+      <div class="topBar chat">
         <div class="topBarPart left">
           <div class="LLMSelectElement"></div>
           <div class="toggleSwitchContainer saveChatToggleContainer">
@@ -51,7 +54,7 @@
           <!-- Generated in leftNavBar.js -->
         </div>
       </div>
-      <div class="window normalChat">       
+      <div class="window chat">       
         <div class="chatContainer">
           <!-- 
           How the chat messages are structured:
@@ -93,8 +96,25 @@
             </div>
           </div>
         </div>
+      
       </div>
 
+      <div class="window settings" id="settingsPanel">
+        <div class="section downloadContainer"></div>
+        <div class="section installedModelsContainer">
+          <h2>Installed models</h2>
+          <table id="installedModelsTable">
+            <tr>
+              <th>Name</th>
+              <th>Size [GB]</th>
+              <th>Latest modification</th>
+              <th>Quantization</th>
+              <th>Parameter size</th>
+              <th>Digest</th>
+            </tr>
+          </table>
+        </div>
+      </div>
       
     </div>
   </body>

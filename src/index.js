@@ -1,4 +1,5 @@
-const { app, BrowserWindow, dialog, ipcMain } = require('electron');
+const { app, BrowserWindow, dialog, ipcMain, shell } = require('electron');
+
 
 const fs = require('fs');
 
@@ -184,6 +185,9 @@ ipcMain.handle('launch-ollama', (event) => {
     ollama = spawn('ollama', ['serve']);
 });
 
+ipcMain.handle('open-link', (event, link) => {
+    shell.openExternal(link);
+});
 
 
 

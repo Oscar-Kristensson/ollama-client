@@ -75,6 +75,7 @@ class ChatSelector {
 
 
     openChat(index) {
+        mainWindowSwitcher.setCurrentState("chat");
         ChatController.loadConversation(this.chatData[index]);
     };
 };
