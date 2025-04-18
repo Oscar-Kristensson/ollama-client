@@ -60,6 +60,8 @@ class CustomDropdown extends Callbacks {
 
         this.dropDownWidth = Utils.max(htmlElement.scrollWidth, this.dropDownWidth);
 
+        return i;
+
 
     }
 
@@ -104,10 +106,10 @@ class CustomDropdown extends Callbacks {
     uiSelectElement(id) {
         this.selectElement(id);
         this.container.classList.remove("opened");
-
     };
 
     selectElement(id) {
+        console.log(id);
         if (id === this.selectedOption) return;
         this.optionsContainers[this.selectedOption].classList.remove("selected");
         
@@ -116,7 +118,10 @@ class CustomDropdown extends Callbacks {
         this.button.innerText = this.options[this.selectedOption];
 
         this.callCallbacks("changed");
+    };
 
+    selectElementByValue(value) {
+        this.selectElement(this.options.indexOf(value));        
     };
 
 

@@ -18,7 +18,10 @@ function validateConfig(config) {
         ["ipAddress", "http://127.0.0.1:11434/"], 
         ["favoriteModel", "?"],
         ["autoLaunchOllama", false],
-        ["allowAutoRelaunch", false]
+        ["allowAutoRelaunch", false],
+        ["defaultModels", {
+            "normal": "gemma3:1b"
+        }]
     ]
 
     let hasChanged = false;

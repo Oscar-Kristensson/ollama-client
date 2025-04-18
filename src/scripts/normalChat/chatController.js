@@ -160,7 +160,7 @@ class ChatControllerClass {
      * 
      * @param {String} model The name of the model that should be used 
      */
-    sendMessage(model = "llama3.2:3b") {
+    sendMessage(model = "gemma3:1b") {
         let textPrompt = this.textInputArea.value;
         
         if (textPrompt === "") return;

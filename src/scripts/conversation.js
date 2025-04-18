@@ -62,7 +62,6 @@ class ChatConversation extends Callbacks {
     }
     
     getAndGenerateConversationName(model = "gemma3:1b") {
-        console.log(model);
         if (this.prompts.length === 0)
             return;
         

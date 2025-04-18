@@ -50,12 +50,12 @@ const ChatController = new ChatControllerClass(chatContainer, messageComposeElem
 // Add listeners
 messageComposeElement.addEventListener("keydown", (event) => {
     if (event.key == "Enter" && event.ctrlKey)
-        ChatController.sendMessage(model = testDropdown.getValue());
+        ChatController.sendMessage(model = modelDropdown.getValue());
 })
 
 
 const sendButtonElement = document.querySelector(".button.send");
-sendButtonElement.addEventListener("click", () => { ChatController.sendMessage(model = testDropdown.getValue()); });
+sendButtonElement.addEventListener("click", () => { ChatController.sendMessage(model = modelDropdown.getValue()); });
 
 
 const testContainer = document.querySelector(".testContainer");
@@ -63,7 +63,7 @@ const testContainer = document.querySelector(".testContainer");
 const LLMSelectElement = document.querySelector(".LLMSelectElement");
 
 
-const testDropdown = new CustomDropdown(LLMSelectElement, ["Model"], [1], CSS_Classes = ["test"], parentIsContainer = true);
+const modelDropdown = new CustomDropdown(LLMSelectElement, ["Model"], [1], CSS_Classes = ["test"], parentIsContainer = true);
 
 
 Ollama.addCallback("cachedLocalModels", () => {
@@ -74,7 +74,10 @@ Ollama.addCallback("cachedLocalModels", () => {
         modelNames.push(model.name)
         
     });
-    testDropdown.setOptions(modelNames, modelNames);
+    
+    modelDropdown.setOptions(modelNames, modelNames);
+
+    modelDropdown.selectElementByValue(config.defaultModels.normal);
 });
 
 
