@@ -213,7 +213,6 @@ class Code extends HTMLFormattedObjectInterface {
 
         formatCode(this.language, codeString)
         .then(formattedCode => {
-            console.log(formattedCode);
             this.container.innerHTML = formattedCode;
         })
         .catch(error => {

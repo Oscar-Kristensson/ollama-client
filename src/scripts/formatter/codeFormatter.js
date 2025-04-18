@@ -33,6 +33,7 @@ function loadLanguageData(language) {
         })
         .catch(error => {
             reason(error);
+            console.warn("NOTE: This is most likely because the language is not added");
         })
     });
 };

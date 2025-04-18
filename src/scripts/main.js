@@ -16,8 +16,13 @@ const saveChatToggleSwitchContainer = document.getElementById("saveChatToggleSwi
 const saveChatToggleSwitch = new ToggleSwitch(saveChatToggleSwitchContainer)
 saveChatToggleSwitch.addCallback("changed", () => {
     ChatController.saveChat = saveChatToggleSwitch.checked;
-    if (ChatController.saveChat)
+
+    if (ChatController.saveChat) {
         ChatController.conversation.export();
+
+        mainChatSelector.createChatElement(ChatController.conversation.conversationName, mainChatSelector.chatData.length);
+        mainChatSelector.chatData.push(ChatController.conversation.getConversationData());
+    }
     else
         ChatController.conversation.deleteSave();
 });
@@ -31,11 +36,13 @@ const tempTestOutputElement = document.getElementById("tempTestOutputElement");
 
 
 const chatContainer = document.querySelector(".chatContainer");
-
 const messageComposeElement = document.querySelector(".messageComposeElement");
+const conversationNameInputElement = document.getElementById("conversationNameInput");
 
-
-const ChatController = new ChatControllerClass(chatContainer, messageComposeElement);
+/**
+ * @type {ChatControllerClass}
+ */
+const ChatController = new ChatControllerClass(chatContainer, messageComposeElement, conversationNameInputElement);
 
 
 

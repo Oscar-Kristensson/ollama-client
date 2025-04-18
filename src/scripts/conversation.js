@@ -22,6 +22,7 @@ class ChatConversation extends Callbacks {
     };
 
     loadConversationData (data) {
+        console.log("Conversation data 2", data)
         this.conversationHistory = data;
     };
 
@@ -55,28 +56,44 @@ class ChatConversation extends Callbacks {
         return conversationHistory;
     };
 
+    setName(name) {
+        this.conversationName = name;
+        this.callCallbacks("nameChange");
+    }
     
-    getAndGenerateConversationName () {
+    getAndGenerateConversationName(model = "gemma3:1b") {
+        console.log(model);
         if (this.prompts.length === 0)
             return;
         
         return new Promise((resolve, reason) => {
-            const prompt = new ChatPrompt(`What would you call a this conversation? \n Prompt: ${this.prompts[0].prompt}. Answer only and only with a descriptive name consisting of a single or few words. The name needs to let the user know the subject area. Answer example: "Quantum Computing"`, "llama3.2:1b");
+            const prompt = new ChatPrompt(`What would you call a this conversation? \n Prompt: ${this.prompts[0].prompt}. Answer only and only \
+                with a descriptive name consisting of a single or few words. The name needs to let the user know the subject area. Answer \
+                example: "Quantum Computing"`, model); // There may be issues if the model is not installed
+
             prompt.addCallback("finished", () => {
-                this.conversationName = prompt.rawResponse;
+                let name = prompt.rawResponse;
 
-                if (this.conversationName[0] === '"') this.conversationName = this.conversationName.slice(1);
-                if (this.conversationName[this.conversationName.length - 1] === '"') this.conversationName = this.conversationName.slice(0, this.conversationName.length - 1);
 
-                resolve(prompt.rawResponse);
+                if (name[0] === '"') name = name.slice(1);
+                if (name[name.length - 1] === '"') name = name.slice(0, name.length - 1);
+
+                resolve(name);
+                this.setName(name);
+
             });
             Ollama.executePrompt(prompt);
 
         });
-
-
-
     };
+
+    getConversationData() {
+        return {
+            startTime: this.startTime,
+            conversation: this.getConversation(),
+            name: this.conversationName
+        };
+    }
 
     export () {
         if (!window.electronAPI) {
@@ -89,11 +106,7 @@ class ChatConversation extends Callbacks {
             return;
         };
     
-        const data = {
-            startTime: this.startTime,
-            conversation: this.getConversation(),
-            name: this.conversationName
-        };
+        const data = this.getConversationData();
 
         return window.electronAPI.writeFile(`save/chats/${this.startTime}.json`, JSON.stringify(data, null, 4));
     };

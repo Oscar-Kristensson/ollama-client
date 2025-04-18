@@ -68,10 +68,12 @@
 }
 
 .installedModelsContainer {
-    overflow-x: scroll;
+    width: calc(100% - 32px);
+    max-width: calc(100% - 32px);
 }
 
 .installedModelsContainer #installedModelsTable {
-    width: max-content;
+    overflow-x: scroll;
+    table-layout: fixed;
 
 }

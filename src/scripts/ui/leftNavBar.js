@@ -37,7 +37,7 @@ const leftNavBarWindowButtons = {
 function generateNavBarButtons (parent, data) {
     let buttons = [];
     for (buttonName in data) {
-        const button = new LeftNavBarButton(parent, "label", buttonName);
+        const button = new LeftNavBarButton(parent, "container", buttonName);
         buttons.push(button);
         if (data[buttonName].hasOwnProperty("onClick"))
             button.addCallback("click", data[buttonName].onClick);

@@ -178,3 +178,13 @@
     align-self: flex-start;
     margin-left: 16px;
 }
+
+
+#conversationNameInput {
+    margin-left: 16px;
+    width: 30ch;
+}
+
+#conversationNameInput.inputting{
+    color: gray;
+}

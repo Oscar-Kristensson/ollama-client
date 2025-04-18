@@ -22,13 +22,26 @@ class ChatSelector {
      * @param {Number} index - The storage location of the conversation data
      */
     createChatElement(name, index) {
-        const element = document.createElement("div");
-        element.className = "label";
-        element.innerText = name;
-        element.addEventListener("click", () => {
+        const container = document.createElement("div");
+        container.className = "container";
+
+        this.container.appendChild(container);
+
+        const label = document.createElement("div");
+        label.innerText = name;
+        label.addEventListener("click", () => {
             this.openChat(index);
         });
-        this.container.appendChild(element);
+
+        container.appendChild(label);
+
+        const deleteButton = document.createElement("div");
+        deleteButton.textContent = "Delete";
+        deleteButton.className = "deleteButton";
+        deleteButton.addEventListener("click", () => {
+            this.deleteChat(index);
+        });
+        container.appendChild(deleteButton);
     };
 
 
@@ -42,6 +55,7 @@ class ChatSelector {
                 return JSON.parse(value);
             })
             .then(chatData => {
+                console.log(">>>", chatData);
                 this.chatData[i] = chatData;
             })
             .catch(error => {
@@ -76,15 +90,30 @@ class ChatSelector {
 
     openChat(index) {
         mainWindowSwitcher.setCurrentState("chat");
-        ChatController.loadConversation(this.chatData[index]);
+
+        ChatController.loadConversation(this.chatData[index], true);
+    };
+
+    deleteChat(index) {
+        window.electronAPI.deleteFile(`save/chats/${this.chatData[index].startTime}.json`)
+        .catch(error => {
+            console.log("An error occured when deleting save: " + error.message);
+        });
+
+        this.container.children[index].classList.add("deleted");
+
     };
 };
 
+/**
+ * @type {ChatSelector}
+ */
+let mainChatSelector = undefined;
 
 if (window.electronAPI)
     window.electronAPI.readFolder("save/chats")
         .then(files => {
-            new ChatSelector(conversationContainer, files)
+            mainChatSelector = new ChatSelector(conversationContainer, files);
         })
         .catch(error => {
             console.error("Error reading folder:", error.message);
