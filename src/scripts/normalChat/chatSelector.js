@@ -13,6 +13,7 @@ class ChatSelector {
         this.container = container;
         this.chatFilesArray = chatFilesArray;
         this.chatData = Array(chatFilesArray.length);
+        this.currentChat = undefined;
         this.loadChats();
     };
 
@@ -45,6 +46,13 @@ class ChatSelector {
     };
 
 
+    createNewConversation() {
+        let index = this.chatData.length;
+        this.openChat(index);
+        saveChatToggleSwitch.setState(false, false);
+    };
+
+
 
 
     loadChats () {
@@ -55,7 +63,6 @@ class ChatSelector {
                 return JSON.parse(value);
             })
             .then(chatData => {
-                console.log(">>>", chatData);
                 this.chatData[i] = chatData;
             })
             .catch(error => {
@@ -74,7 +81,7 @@ class ChatSelector {
     /**
      * Creates the chat elements from the chatData
      */
-    createChatElements () {
+    createChatElements() {
         for (let i = 0; i < this.chatData.length; i++) {            
             let name;
             if (this.chatData[i].hasOwnProperty("name")) 
@@ -88,21 +95,33 @@ class ChatSelector {
     };
 
 
-    openChat(index) {
+    openChat(index, emptyConversation = false) {
+        this.currentChat = index;
         mainWindowSwitcher.setCurrentState("chat");
 
-        ChatController.loadConversation(this.chatData[index], true);
+        let chatData = undefined;
+        if (!emptyConversation)
+            this.chatData[index];
+        
+        ChatController.loadConversation(chatData, true);
     };
 
     deleteChat(index) {
+        console.log(this.chatData, index);
+        
         window.electronAPI.deleteFile(`save/chats/${this.chatData[index].startTime}.json`)
         .catch(error => {
             console.log("An error occured when deleting save: " + error.message);
         });
-
+        
         this.container.children[index].classList.add("deleted");
-
+        this.chatData[index] = undefined;
+        
+        if (this.currentChat === index) {
+            this.currentChat = undefined;
+        };
     };
+
 };
 
 /**

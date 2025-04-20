@@ -19,12 +19,16 @@ saveChatToggleSwitch.addCallback("changed", () => {
 
     if (ChatController.saveChat) {
         ChatController.conversation.export();
-
-        mainChatSelector.createChatElement(ChatController.conversation.conversationName, mainChatSelector.chatData.length);
         mainChatSelector.chatData.push(ChatController.conversation.getConversationData());
+        mainChatSelector.createChatElement(ChatController.conversation.conversationName, mainChatSelector.chatData.length - 1);
+        mainChatSelector.openChat(mainChatSelector.chatData.length - 1);
     }
-    else
-        ChatController.conversation.deleteSave();
+    else {
+        console.log(mainChatSelector.currentChat);
+        mainChatSelector.deleteChat(mainChatSelector.currentChat);
+        // ChatController.conversation.deleteSave();
+    }
+
 });
 
 

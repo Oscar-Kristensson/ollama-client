@@ -5,7 +5,7 @@
  * * Handling the UI for the chats
  * * Sending messages based on the user input
  * 
- *  The ChatController has a link to the current ChatConversation
+ * The ChatController has a link to the current ChatConversation
  */
 class ChatControllerClass {
     constructor (chatContainer, textInputArea, conversationNameInput) {
@@ -25,8 +25,6 @@ class ChatControllerClass {
         this.chatMessages = [];
 
         this.saveChat = false;
-
-
     };
 
     /**
@@ -65,11 +63,7 @@ class ChatControllerClass {
         
         this.saveChat = saveNewConversation;
 
-        console.log(conversationData);
-
         let startTime = new Date();
-
-        
         
         
         if (conversationData)
@@ -77,8 +71,6 @@ class ChatControllerClass {
                 startTime = conversationData.startTime;
         
         this.conversation = new ChatConversation(startTime);
-
-        console.log("Created new conversation", this.conversation);
 
         this.conversation.addCallback("nameChange", () => {
             this.updateNameUI();
@@ -132,7 +124,6 @@ class ChatControllerClass {
      * Updates the UI interface with the new name from the linked conversation object
      */
     updateNameUI() {
-        console.log("Updating name Ui")
         if (!this.conversation.conversationName) {
             console.warn("Can not update the conversation name to undefined");
             return;

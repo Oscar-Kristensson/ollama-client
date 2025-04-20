@@ -100,12 +100,13 @@ class ChatConversation extends Callbacks {
             return;
         }
 
-        if (this.prompts.length === 0) {
+        
+        const data = this.getConversationData();
+        
+        if (data.length === 0) {
             console.warn("Did not save empty conversation");
             return;
         };
-    
-        const data = this.getConversationData();
 
         return window.electronAPI.writeFile(`save/chats/${this.startTime}.json`, JSON.stringify(data, null, 4));
     };
