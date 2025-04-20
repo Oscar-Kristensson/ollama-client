@@ -22,7 +22,6 @@ class ChatConversation extends Callbacks {
     };
 
     loadConversationData (data) {
-        console.log("Conversation data 2", data)
         this.conversationHistory = data;
     };
 

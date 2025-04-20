@@ -13,7 +13,7 @@ if (window.electronAPI)
 
 
 const saveChatToggleSwitchContainer = document.getElementById("saveChatToggleSwitch");
-const saveChatToggleSwitch = new ToggleSwitch(saveChatToggleSwitchContainer)
+const saveChatToggleSwitch = new ToggleSwitch(saveChatToggleSwitchContainer);
 saveChatToggleSwitch.addCallback("changed", () => {
     ChatController.saveChat = saveChatToggleSwitch.checked;
 

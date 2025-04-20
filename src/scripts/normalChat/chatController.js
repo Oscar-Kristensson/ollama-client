@@ -45,6 +45,8 @@ class ChatControllerClass {
         this.chatMessages = [];
 
         this.conversation = undefined;
+
+        this.conversationNameInput.value = "";
     };
 
     /**
@@ -98,7 +100,7 @@ class ChatControllerClass {
         };
 
 
-        saveChatToggleSwitch.setState(saveNewConversation);
+        saveChatToggleSwitch.setState(saveNewConversation, false);
 
 
 

@@ -100,15 +100,14 @@ class ChatSelector {
         mainWindowSwitcher.setCurrentState("chat");
 
         let chatData = undefined;
-        if (!emptyConversation)
-            this.chatData[index];
-        
+        if (!emptyConversation) {
+            chatData = this.chatData[index];
+        }
+
         ChatController.loadConversation(chatData, true);
     };
 
-    deleteChat(index) {
-        console.log(this.chatData, index);
-        
+    deleteChat(index) {      
         window.electronAPI.deleteFile(`save/chats/${this.chatData[index].startTime}.json`)
         .catch(error => {
             console.log("An error occured when deleting save: " + error.message);

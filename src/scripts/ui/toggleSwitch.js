@@ -30,7 +30,9 @@ class ToggleSwitch extends Callbacks {
         else
             this.container.classList.remove("active");
 
-        this.callCallbacks("changed");
+        if (callCallbacks) { 
+            this.callCallbacks("changed");
+        };
 
     }
 
