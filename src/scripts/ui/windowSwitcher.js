@@ -23,6 +23,11 @@ class WindowSwitcher {
     };
 
     
+    getCurrentState() {
+        return this.currentState;
+    };
+
+    
 };
 
 

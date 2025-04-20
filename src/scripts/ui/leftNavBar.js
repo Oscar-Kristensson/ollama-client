@@ -17,7 +17,9 @@ class LeftNavBarButton extends Callbacks {
 const leftNavBarWindowButtons = {
     Chat: {
         "onClick": () => { 
-            mainChatSelector.createNewConversation();
+            if (!mainWindowSwitcher.getCurrentState("chat"))
+                mainChatSelector.createNewConversation();
+
             mainWindowSwitcher.setCurrentState("chat"); 
         }
     },
